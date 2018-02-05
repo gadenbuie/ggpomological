@@ -104,17 +104,21 @@ pomological_theme <- function(
       text = element_text(
         family = base_family, 
         size = base_size, 
-        color = ifelse(hasArg(text.color), text.color, pomological_base$dark_blue)
+        colour = ifelse(hasArg(text.color), text.color, pomological_base$dark_blue)
       ),
       plot.background = element_rect(
         fill = ifelse(hasArg(plot.background.color), plot.background.color, pomological_base$paper), 
-        color = NA
+        colour = NA
       ),
       panel.grid = element_line(
-        color = ifelse(hasArg(panel.grid.color), panel.grid.color, pomological_base$light_line),
+        colour = ifelse(hasArg(panel.grid.color), panel.grid.color, pomological_base$light_line),
         linetype = panel.grid.linetype),
+      panel.grid.major = element_line(
+        colour = ifelse(hasArg(panel.grid.color), panel.grid.color, pomological_base$light_line),
+        linetype = panel.grid.linetype),
+      panel.grid.minor = element_blank(),
       axis.text = element_text(
-        color = ifelse(hasArg(axis.text.color), axis.text.color, pomological_base$medium_line), 
+        colour = ifelse(hasArg(axis.text.color), axis.text.color, pomological_base$medium_line), 
         size = axis.text.size)
     )
 }
