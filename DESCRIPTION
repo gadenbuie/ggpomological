@@ -1,0 +1,9 @@
+Package: ggpomological
+Version: 0.0.0.9000
+Title: Pomological plot themes for ggplot2
+Description: Pomological plot themes and scales for ggplot2 (in progress)
+Authors@R: person("Garrick", "Aden-Buie", , "g.adenbuie@gmail.com", c("aut", "cre"))
+License: CC0
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
