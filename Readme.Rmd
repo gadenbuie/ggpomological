@@ -2,9 +2,7 @@
 title: "Pomological Colors"
 author: "Garrick Aden-Buie"
 date: "2/4/2018"
-output: 
-  github_document:
-    toc: true
+output: github_document
 editor_options: 
   chunk_output_type: console
 ---
@@ -16,6 +14,18 @@ knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=5)
 ## Pomological Plots
 
 ![](pom-examples.jpg)
+
+-   [Pomological Plots](#pomological-plots)
+-   [Color Palette](#color-palette)
+-   [Setup theme and scales](#setup-theme-and-scales)
+-   [Add paper background!](#add-paper-background)
+-   [Demo!](#demo)
+    -   [Basic iris plot](#basic-iris-plot)
+    -   [Stacked bar chart](#stacked-bar-chart)
+    -   [Density Plot](#density-plot)
+    -   [Points and lines](#points-and-lines)
+    -   [One last plot](#one-last-plot)
+-   [Appendix](#appendix)
 
 Inspired by talk at **LINK rstudio conf** by **LINK talk about parameterized rmarkdown**.
 

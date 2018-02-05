@@ -7,6 +7,18 @@ Garrick Aden-Buie
 
 ![](pom-examples.jpg)
 
+  - [Pomological Plots](#pomological-plots)
+  - [Color Palette](#color-palette)
+  - [Setup theme and scales](#setup-theme-and-scales)
+  - [Add paper background\!](#add-paper-background)
+  - [Demo\!](#demo)
+      - [Basic iris plot](#basic-iris-plot)
+      - [Stacked bar chart](#stacked-bar-chart)
+      - [Density Plot](#density-plot)
+      - [Points and lines](#points-and-lines)
+      - [One last plot](#one-last-plot)
+  - [Appendix](#appendix)
+
 Inspired by talk at **LINK rstudio conf** by **LINK talk about
 parameterized rmarkdown**.
 
