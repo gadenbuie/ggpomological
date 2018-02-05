@@ -255,10 +255,11 @@ pomological_iris
 
 ``` r
 # Painted!
-paint_pomological(pomological_iris, res = 110)
+paint_pomological(pomological_iris, res = 110) %>% 
+  magick::image_write("Readme_files/figure-gfm/plot-demo-painted.png")
 ```
 
-![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b2745be8e51.png)<!-- -->
+![](Readme_files/figure-gfm/plot-demo-painted.png)
 
 ### Stacked bar chart
 
@@ -280,10 +281,11 @@ stacked_bar_plot + pomological_theme()
 paint_pomological(
   stacked_bar_plot + pomological_theme_nobg(),
   res = 110
-)
+) %>% 
+  magick::image_write("Readme_files/figure-gfm/plot-bar-chart-painted.png")
 ```
 
-![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b276584e0be.png)<!-- -->
+![](Readme_files/figure-gfm/plot-bar-chart-painted.png)
 
 ### Density Plot
 
@@ -306,10 +308,11 @@ density_plot + pomological_theme()
 paint_pomological(
   density_plot + pomological_theme_nobg(),
   res = 110
-)
+) %>% 
+  magick::image_write("Readme_files/figure-gfm/plot-density-demo-painted.png")
 ```
 
-![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b27793123dc.png)<!-- -->
+![](Readme_files/figure-gfm/plot-density-demo-painted.png)
 
 ### Points and lines
 
@@ -327,7 +330,7 @@ big_volume_cities <- txhousing %>%
     ## Selecting by mean_volume
 
 ``` r
-point_line_plot <- txhousing %>% 
+full_bar_stack_plot <- txhousing %>% 
   filter(city %in% big_volume_cities) %>% 
   group_by(city, year) %>% 
   summarize(mean_volume = mean(volume, na.rm = TRUE)) %>% 
@@ -340,19 +343,20 @@ point_line_plot <- txhousing %>%
   theme(panel.grid.minor.x = element_blank()) +
   scale_fill_pomological()
 
-point_line_plot + pomological_theme()
+full_bar_stack_plot + pomological_theme()
 ```
 
-![](Readme_files/figure-gfm/plot-points-lines-1.png)<!-- -->
+![](Readme_files/figure-gfm/plot-full-bar-stack-1.png)<!-- -->
 
 ``` r
 paint_pomological(
-  point_line_plot + pomological_theme_nobg(),
+  full_bar_stack_plot + pomological_theme_nobg(),
   res = 110
-)
+) %>% 
+  magick::image_write("Readme_files/figure-gfm/plot-full-bar-stack-painted.png")
 ```
 
-![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b2733b948e.png)<!-- -->
+![](Readme_files/figure-gfm/plot-full-bar-stack-painted.png)
 
 ### One last plot
 
@@ -370,12 +374,13 @@ ridges_pomological <- ggplot(diamonds) +
   scale_fill_pomological() + 
   scale_color_pomological()
 
-paint_pomological(ridges_pomological, res = 110)
+paint_pomological(ridges_pomological, res = 110) %>% 
+  magick::image_write("Readme_files/figure-gfm/plot-ridges-painted.png")
 ```
 
     ## Picking joint bandwidth of 0.057
 
-![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b2719dfe159.png)<!-- -->
+![](Readme_files/figure-gfm/plot-ridges-painted.png)
 
 ## Appendix
 
