@@ -1,25 +1,17 @@
----
-title: "Pomological Colors"
-author: "Garrick Aden-Buie"
-date: "2/4/2018"
-output: 
-  github_document:
-    toc: true
-editor_options: 
-  chunk_output_type: console
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=5)
-```
+Pomological Colors
+================
+Garrick Aden-Buie
+2/4/2018
 
 ## Pomological Plots
 
 ![](pom-examples.jpg)
 
-Inspired by talk at **LINK rstudio conf** by **LINK talk about parameterized rmarkdown**.
+Inspired by talk at **LINK rstudio conf** by **LINK talk about
+parameterized rmarkdown**.
 
-Went through **LINK USDA pomological** oh and also **LINK @pomological**.
+Went through **LINK USDA pomological** oh and also **LINK
+@pomological**.
 
 <https://usdawatercolors.nal.usda.gov/pom>
 
@@ -31,7 +23,7 @@ Picked out a LOT of colors.
 
 Chose a few:
 
-```{r}
+``` r
 pomological_palette <- c(
   "#c03728", #red
   "#919c4c", #green darkish
@@ -61,24 +53,31 @@ pomological_base <- list(
 
 # Palette colors
 scales::show_col(pomological_palette)
+```
+
+![](Readme_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+``` r
 # Base colors
 scales::show_col(unlist(pomological_base))
 ```
 
+![](Readme_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
 ## Setup theme and scales
 
-Theme is basic in two flavors, one with paper-colored background and the other transparent bg.
+Theme is basic in two flavors, one with paper-colored background and the
+other transparent bg.
 
-Uses fonts from Google! I tried a few, liked 
+Uses fonts from Google\! I tried a few, liked
 
-- [Homemade Apple](https://fonts.google.com/specimen/Homemade+Apple/)
-- [Amatic SC](https://fonts.google.com/specimen/Amatic+SC/)
-- [Mr. Bedfort](https://fonts.google.com/specimen/Mr+Bedfort/)
+  - [Homemade Apple](https://fonts.google.com/specimen/Homemade+Apple/)
+  - [Amatic SC](https://fonts.google.com/specimen/Amatic+SC/)
+  - [Mr. Bedfort](https://fonts.google.com/specimen/Mr+Bedfort/)
 
 I also have a handwriting font from my own handwriting that looks great
 
-```{r pomological-theme}
+``` r
 pomological_theme <- function(
   base_family = 'Homemade Apple', 
   base_size = 16,
@@ -127,11 +126,9 @@ pomological_theme_nobg <- function(...) {
 }
 ```
 
+scales…
 
-scales...
-
-
-```{r pomological-scales}
+``` r
 # learned this from https://github.com/hrbrmstr/hrbrthemes/blob/13f9b59579f007b8a5cbe5c699cbe3ec5fdd28a1/R/color.r
 pomological_pal <- function() scales::manual_pal(pomological_palette)
 
@@ -143,21 +140,20 @@ scale_color_pomological <- scale_colour_pomological
 scale_fill_pomological <- function(...) ggplot2::discrete_scale('fill', 'pomological', pomological_pal(), ...)
 ```
 
-
 In the future, I might come back to this to:
 
-1. Increase colors in discrete scale
+1.  Increase colors in discrete scale
 
-2. Setup a color-pairs plot. Lots of great color pairs in the extracted colors.
+2.  Setup a color-pairs plot. Lots of great color pairs in the extracted
+    colors.
 
-3. Set up continuous scale colors (meh.)
+3.  Set up continuous scale colors (meh.)
 
-
-## Add paper background!
+## Add paper background\!
 
 This is great. Uses **LINK magick** to add paper background.
 
-```{r paint_pomological}
+``` r
 paint_pomological <- function(
   pomo_gg, 
   width = 800, 
@@ -201,19 +197,32 @@ paint_pomological <- function(
 }
 ```
 
+## Demo\!
 
-## Demo!
+We’ll need dplyr and ggplot2
 
-We'll need dplyr and ggplot2
-
-```{r libraries, messages=FALSE, warning=FALSE}
+``` r
 library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
 library(ggplot2)
 ```
 
 ### Basic iris plot
 
-```{r plot-demo}
+``` r
 # Base plot
 basic_iris_plot <- ggplot(iris) +
   aes(x = Sepal.Length, y = Sepal.Width, color = Species) +
@@ -221,27 +230,39 @@ basic_iris_plot <- ggplot(iris) +
 
 # Just your standard Iris plot
 basic_iris_plot 
+```
 
+![](Readme_files/figure-gfm/plot-demo-1.png)<!-- -->
+
+``` r
 # With pomological theme
 basic_iris_plot +
   pomological_theme() +
   scale_color_pomological()
+```
 
+![](Readme_files/figure-gfm/plot-demo-2.png)<!-- -->
 
+``` r
 # With transparent background
 pomological_iris <- basic_iris_plot +
   pomological_theme_nobg() +
   scale_color_pomological()
 pomological_iris 
+```
 
+![](Readme_files/figure-gfm/plot-demo-3.png)<!-- -->
+
+``` r
 # Painted!
 paint_pomological(pomological_iris, res = 110)
 ```
 
+![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b2745be8e51.png)<!-- -->
+
 ### Stacked bar chart
 
-
-```{r plot-bar-chart}
+``` r
 stacked_bar_plot <- ggplot(diamonds) +
   aes(price, fill = cut) +
   geom_histogram(binwidth = 850) + 
@@ -251,16 +272,22 @@ stacked_bar_plot <- ggplot(diamonds) +
   scale_fill_pomological()
 
 stacked_bar_plot + pomological_theme()
+```
 
+![](Readme_files/figure-gfm/plot-bar-chart-1.png)<!-- -->
+
+``` r
 paint_pomological(
   stacked_bar_plot + pomological_theme_nobg(),
   res = 110
 )
 ```
 
+![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b276584e0be.png)<!-- -->
+
 ### Density Plot
 
-```{r plot-density}
+``` r
 density_plot <- mtcars %>% 
   mutate(cyl = factor(cyl)) %>% 
   ggplot() +
@@ -271,26 +298,35 @@ density_plot <- mtcars %>%
   scale_fill_pomological()
 
 density_plot + pomological_theme()
+```
 
+![](Readme_files/figure-gfm/plot-density-1.png)<!-- -->
+
+``` r
 paint_pomological(
   density_plot + pomological_theme_nobg(),
   res = 110
 )
 ```
 
+![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b27793123dc.png)<!-- -->
 
 ### Points and lines
 
 Data from the Texas Housing
 
-```{r plot-points-lines}
+``` r
 big_volume_cities <- txhousing %>% 
   group_by(city) %>% 
   summarize(mean_volume = mean(volume, na.rm = TRUE)) %>% 
   arrange(-mean_volume) %>% 
   top_n(length(pomological_palette)) %>% 
   pull(city)
+```
 
+    ## Selecting by mean_volume
+
+``` r
 point_line_plot <- txhousing %>% 
   filter(city %in% big_volume_cities) %>% 
   group_by(city, year) %>% 
@@ -305,18 +341,24 @@ point_line_plot <- txhousing %>%
   scale_fill_pomological()
 
 point_line_plot + pomological_theme()
+```
 
+![](Readme_files/figure-gfm/plot-points-lines-1.png)<!-- -->
+
+``` r
 paint_pomological(
   point_line_plot + pomological_theme_nobg(),
   res = 110
 )
 ```
 
+![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b2733b948e.png)<!-- -->
+
 ### One last plot
 
 (in my handwriting)
 
-```{r plot-ridges}
+``` r
 ridges_pomological <- ggplot(diamonds) + 
   aes(x = carat, y = clarity, color = clarity, fill = clarity) + 
   ggridges::geom_density_ridges(alpha = 0.75) + 
@@ -331,14 +373,18 @@ ridges_pomological <- ggplot(diamonds) +
 paint_pomological(ridges_pomological, res = 110)
 ```
 
+    ## Picking joint bandwidth of 0.057
 
+![](/var/folders/qy/gyl9x1w92m5brmly42cp1vmw0000gn/T//RtmpBqcdzh/file12b2719dfe159.png)<!-- -->
 
 ## Appendix
 
 <details>
-<summary>Some functions I wrote while exploring colors, that may or may not work here.</summary>
 
-```{r appendix, eval=FALSE}
+<summary>Some functions I wrote while exploring colors, that may or may
+not work here.</summary>
+
+``` r
 # load all colors
 x <- readLines("pomological.css")
 x <- stringr::str_extract(x, "#[0-9a-f]{6}")
