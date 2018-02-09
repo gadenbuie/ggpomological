@@ -19,48 +19,60 @@ Garrick Aden-Buie
       - [One last plot](#one-last-plot)
   - [Appendix](#appendix)
 
-Inspired by talk at **LINK rstudio conf** by **LINK talk about
-parameterized rmarkdown**.
+<!-- Links -->
 
-Went through **LINK USDA pomological** oh and also **LINK
-@pomological**.
+Aron Atkins ([@aronatkins](https://twitter.com/aronatkins)) gave a great
+talk at [rstudio::conf 2018](https://www.rstudio.com/conference/) about
+a subject near and dear to my heart: parameterized RMarkdown. And
+apples.
 
-<https://usdawatercolors.nal.usda.gov/pom>
+In his talk, he designed a parameterized RMarkdown report that would
+provide the user with a customized report for their selected fruit,
+based on the [USDA Pomological Watercolors
+database](https://usdawatercolors.nal.usda.gov/pom). I hade never heard
+of the USDA watercolor – or the it’s fan club twitter account
+[@pomological](https://twitter.com/pomological) until watching his talk.
+It’s a treasure trove of thousands of watercolor images of fruits;
+beautiful images with intricate details and a very unique and stunning
+palette. The perfect palette for a custom ggplot2 theme.
+
+What follows is a set of functions that I plan to pull together into a
+simple package that will provide a custom, pomological-inspired ggplot2
+theme.
+
+Before reading more about `ggpomological`, you should really check out
+[Aron’s talk](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) or [his
+slides](https://github.com/rstudio/rstudio-conf/tree/master/2018/Fruit_For_Thought--Aron_Atkins).
 
 ## Color Palette
 
-Picked out a LOT of colors.
+The first thing I did was browse through the [pomological watercolors
+collection](https://usdawatercolors.nal.usda.gov/pom), downloading
+images of a wide variety of fruits. I didn’t do this in any systematic
+way, other than occasionally searching for a particular type of fruit,
+like ‘grape’ or ‘papaya’.
+
+From these images, I used an application (that I installed forever ago
+and is no longer around) called ColorSchemer Studio to pull out a set of
+colors that I felt represented the collection.
+
+I ended up with a lot of colors.
 
 ![](pomological_colors.png)
 
-Chose a few:
+From this list, I chose just a few that worked well together.
 
 ``` r
 pomological_palette <- c(
-  "#c03728", #red
-  "#919c4c", #green darkish
-  "#fd8f24", #orange brighter
-  # "#f2692e", #orange
-  "#f5c04a", #yelloww
-  "#e68c7c", #pink
-  "#828585", #light grey
-  "#c3c377", #green light
-  "#4f5157", #darker blue/grey
-  # "#912b1b", #red, darker
-  "#6f5438", #lighter brown
-  # "#ec4339", #red/pink
-  # "#6b452b", #brown
-  NULL
-)
-
-pomological_base <- list(
-  "paper" = "#fffeea",
-  'paper_alt' = "#f8eed1",
-  'light_line' = '#efe1c6',
-  'medium_line' = "#a89985",
-  'darker_line' = "#6b452b",
-  'black' = "#3a3e3f",
-  "dark_blue" = "#2b323f"
+   "#c03728" #red
+  ,"#919c4c" #green darkish
+  ,"#fd8f24" #orange brighter
+  ,"#f5c04a" #yelloww
+  ,"#e68c7c" #pink
+  ,"#828585" #light grey
+  ,"#c3c377" #green light
+  ,"#4f5157" #darker blue/grey
+  ,"#6f5438" #lighter brown
 )
 
 # Palette colors
@@ -70,6 +82,16 @@ scales::show_col(pomological_palette)
 ![](Readme_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ``` r
+pomological_base <- list(
+   "paper"       = "#fffeea"
+  ,"paper_alt"   = "#f8eed1"
+  ,"light_line"  = "#efe1c6"
+  ,"medium_line" = "#a89985"
+  ,"darker_line" = "#6b452b"
+  ,"black"       = "#3a3e3f"
+  ,"dark_blue"   = "#2b323f"
+)
+
 # Base colors
 scales::show_col(unlist(pomological_base))
 ```
@@ -78,16 +100,22 @@ scales::show_col(unlist(pomological_base))
 
 ## Setup theme and scales
 
-Theme is basic in two flavors, one with paper-colored background and the
-other transparent bg.
+I created two theme-generating functions, `pomological_theme()` sets the
+plot theme to be representative of the paper and styling of the
+watercolors and includes a paper-colored background, and
+`pomological_theme_nobg()` is the same as the first, just with a
+transparent (or white) background.
 
-Uses fonts from Google\! I tried a few, liked
+A handwriting font is needed for the fully authentic pomological look,
+and I found a few from Google Fonts that fit the bill.
 
   - [Homemade Apple](https://fonts.google.com/specimen/Homemade+Apple/)
   - [Amatic SC](https://fonts.google.com/specimen/Amatic+SC/)
   - [Mr. Bedfort](https://fonts.google.com/specimen/Mr+Bedfort/)
 
-I also have a handwriting font from my own handwriting that looks great
+Alternatively, use something like
+[calligrapher.com](https://www.calligraphr.com/) to create your own
+handwriting font\!
 
 ``` r
 pomological_theme <- function(
@@ -142,7 +170,8 @@ pomological_theme_nobg <- function(...) {
 }
 ```
 
-scales…
+Here are the color scales you’ll need: `scale_color_pomological` and
+`scale_fill_pomological`.
 
 ``` r
 # learned this from https://github.com/hrbrmstr/hrbrthemes/blob/13f9b59579f007b8a5cbe5c699cbe3ec5fdd28a1/R/color.r
@@ -156,18 +185,23 @@ scale_color_pomological <- scale_colour_pomological
 scale_fill_pomological <- function(...) ggplot2::discrete_scale('fill', 'pomological', pomological_pal(), ...)
 ```
 
-In the future, I might come back to this to:
+In the future, I might come back to this to
 
 1.  Increase colors in discrete scale
 
 2.  Setup a color-pairs plot. Lots of great color pairs in the extracted
     colors.
 
-3.  Set up continuous scale colors (meh.)
+3.  Set up continuous scale colors (we’ll see…)
 
 ## Add paper background\!
 
-This is great. Uses **LINK magick** to add paper background.
+Great, but I want my plots to look even more pomological, you say?
+
+Perfect\! This function uses the
+[`magick`](https://cran.r-project.org/web/packages/magick/index.html)
+package to add a pomological watercolor paper background and a subtle
+texture overlay.
 
 ``` r
 paint_pomological <- function(
