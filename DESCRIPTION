@@ -9,3 +9,10 @@ LazyData: true
 ByteCompile: true
 URL: https://github.com/gadenbuie/ggpomological
 BugReports: https://github.com/gadenbuie/ggpomological/issues
+RoxygenNote: 6.0.1
+Roxygen: list(markdown = TRUE)
+Depends: 
+    ggplot2
+Imports: 
+    magick,
+    extrafont

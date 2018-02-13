@@ -11,21 +11,10 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=5)
 ```
 
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
+
 ## Pomological Plots
 
-![](pom-examples.jpg)
-
--   [Pomological Plots](#pomological-plots)
--   [Color Palette](#color-palette)
--   [Setup theme and scales](#setup-theme-and-scales)
--   [Add paper background!](#add-paper-background)
--   [Demo!](#demo)
-    -   [Basic iris plot](#basic-iris-plot)
-    -   [Stacked bar chart](#stacked-bar-chart)
-    -   [Density Plot](#density-plot)
-    -   [Points and lines](#points-and-lines)
-    -   [One last plot](#one-last-plot)
--   [Appendix](#appendix)
 
 <!-- Links -->
 [rstudioconf]:   https://www.rstudio.com/conference/
@@ -36,65 +25,34 @@ knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=5)
 [t-pomological]: https://twitter.com/pomological
 [magick]:        https://cran.r-project.org/web/packages/magick/index.html
 
-Aron Atkins ([\@aronatkins][t-aronatkins]) gave a great talk at [rstudio::conf 2018][rstudioconf] about a subject near and dear to my heart: parameterized RMarkdown.
-And apples.
+This package provides a ggplot2 theme inspired by the [USDA Pomological Watercolors collection][usda-pom] and by Aron Atkins's ([\@aronatkins][t-aronatkins]) [talk on parameterized RMarkdown][rsconf-video] at [rstudio::conf 2018][rstudioconf].
 
-In his talk, he designed a parameterized RMarkdown report that would provide the user with a customized report for their selected fruit, based on the [USDA Pomological Watercolors database][usda-pom].
-I hade never heard of the USDA watercolor -- or the it's fan club twitter account [\@pomological][t-pomological] until watching his talk.
-It's a treasure trove of thousands of watercolor images of fruits; beautiful images with intricate details and a very unique and stunning palette.
-The perfect palette for a custom ggplot2 theme.
-
-What follows is a set of functions that I plan to pull together into a simple package that will provide a custom, pomological-inspired ggplot2 theme.
-
-Before reading more about `ggpomological`, you should really check out [Aron's talk][rsconf-video] or [his slides][rsconf-slides].
+![](Readme_files/pom-examples.jpg)
 
 ## Color Palette
 
-The first thing I did was browse through the [pomological watercolors collection][usda-pom], downloading images of a wide variety of fruits.
-I didn't do this in any systematic way, other than occasionally searching for a particular type of fruit, like 'grape' or 'papaya'.
-
-From these images, I used an application (that I installed forever ago and is no longer around) called ColorSchemer Studio to pull out a set of colors that I felt represented the collection.
-
-I ended up with a lot of colors.
-
-![](pomological_colors.png)
-
-From this list, I chose just a few that worked well together.
+The colors for this theme were drawn from many images from the [USDA Pomological Watercolors collection][usda-pom], I chose just a few that I thought worked well together for color and fill scales
 
 ```{r}
-pomological_palette <- c(
-   "#c03728" #red
-  ,"#919c4c" #green darkish
-  ,"#fd8f24" #orange brighter
-  ,"#f5c04a" #yelloww
-  ,"#e68c7c" #pink
-  ,"#828585" #light grey
-  ,"#c3c377" #green light
-  ,"#4f5157" #darker blue/grey
-  ,"#6f5438" #lighter brown
-)
-
-# Palette colors
-scales::show_col(pomological_palette)
-
-pomological_base <- list(
-   "paper"       = "#fffeea"
-  ,"paper_alt"   = "#f8eed1"
-  ,"light_line"  = "#efe1c6"
-  ,"medium_line" = "#a89985"
-  ,"darker_line" = "#6b452b"
-  ,"black"       = "#3a3e3f"
-  ,"dark_blue"   = "#2b323f"
-)
-
-# Base colors
-scales::show_col(unlist(pomological_base))
+scales::show_col(ggpomological:::pomological_palette)
 ```
+
+and a few colors for the plot background and decoration
+
+```{r}
+scales::show_col(unlist(ggpomological:::pomological_base))
+```
+
+I've also included a [css file](inst/pomological.css) with the complete collection of color samples.
 
 
 ## Setup theme and scales
 
-I created two theme-generating functions, `pomological_theme()` sets the plot theme to be representative of the paper and styling of the watercolors and includes a paper-colored background, and `pomological_theme_nobg()` is the same as the first, just with a transparent (or white) background.
+There are two theme-generating functions: 
+
+- `theme_pomological()` sets the plot theme to be representative of the paper and styling of the watercolors and includes a paper-colored background, 
+
+- and `theme_pomological_nobg()` has the same styling, just with a transparent (or white) background.
 
 A handwriting font is needed for the fully authentic pomological look, and I found a few from Google Fonts that fit the bill.
 
@@ -104,144 +62,29 @@ A handwriting font is needed for the fully authentic pomological look, and I fou
 
 Alternatively, use something like [calligrapher.com](https://www.calligraphr.com/) to create your own handwriting font!
 
-```{r pomological-theme}
-pomological_theme <- function(
-  base_family = 'Homemade Apple', 
-  base_size = 16,
-  text.color = NULL,
-  plot.background.color = NULL,
-  panel.grid.color = NULL,
-  panel.grid.linetype = 'dashed',
-  axis.text.color = NULL,
-  axis.text.size = base_size * 14/16,
-  base_theme = ggplot2::theme_minimal()
-) {
-  pomological_base <- list(
-    "paper" = "#fffeea",
-    'paper_alt' = "#f8eed1",
-    'light_line' = '#efe1c6',
-    'medium_line' = "#a89985",
-    'darker_line' = "#6b452b",
-    'black' = "#3a3e3f",
-    "dark_blue" = "#2b323f"
-  )
-  
-  base_theme + 
-    ggplot2::theme(
-      text = element_text(
-        family = base_family, 
-        size = base_size, 
-        colour = ifelse(hasArg(text.color), text.color, pomological_base$dark_blue)
-      ),
-      plot.background = element_rect(
-        fill = ifelse(hasArg(plot.background.color), plot.background.color, pomological_base$paper), 
-        colour = NA
-      ),
-      panel.grid = element_line(
-        colour = ifelse(hasArg(panel.grid.color), panel.grid.color, pomological_base$light_line),
-        linetype = panel.grid.linetype),
-      panel.grid.major = element_line(
-        colour = ifelse(hasArg(panel.grid.color), panel.grid.color, pomological_base$light_line),
-        linetype = panel.grid.linetype),
-      panel.grid.minor = element_blank(),
-      axis.text = element_text(
-        colour = ifelse(hasArg(axis.text.color), axis.text.color, pomological_base$medium_line), 
-        size = axis.text.size)
-    )
-}
+For color and fill scales, **ggpomological** provides `scale_color_pomological()` and `scale_fill_pomological()`.
 
-pomological_theme_nobg <- function(...) {
-  dots <- list(...)
-  dots$plot.background.color <- 'transparent'
-  do.call('pomological_theme', args = dots)
-}
-```
-
-
-Here are the color scales you'll need: `scale_color_pomological` and `scale_fill_pomological`.
-
-
-```{r pomological-scales}
-# learned this from https://github.com/hrbrmstr/hrbrthemes/blob/13f9b59579f007b8a5cbe5c699cbe3ec5fdd28a1/R/color.r
-pomological_pal <- function() scales::manual_pal(pomological_palette)
-
-# Scale color
-scale_colour_pomological <- function(...) ggplot2::discrete_scale("colour", "pomological", pomological_pal(), ...)
-scale_color_pomological <- scale_colour_pomological
-
-# Scale fill
-scale_fill_pomological <- function(...) ggplot2::discrete_scale('fill', 'pomological', pomological_pal(), ...)
-```
-
-
-In the future, I might come back to this to
+In the future, I might revisit this package to
 
 1. Increase colors in discrete scale
 
-2. Setup a color-pairs plot. Lots of great color pairs in the extracted colors.
+2. Setup paired color scales. Lots of great color pairs in the extracted colors.
 
 3. Set up continuous scale colors (we'll see...)
 
 
 ## Add paper background!
 
-Great, but I want my plots to look even more pomological, you say?
-
-Perfect! 
-This function uses the [`magick`][magick] package to add a pomological watercolor paper background and a subtle texture overlay.
-
-```{r paint_pomological}
-paint_pomological <- function(
-  pomo_gg, 
-  width = 800, 
-  height = 500, 
-  pointsize = 16, 
-  pomological_background = 'pomological_bg.png', 
-  pomological_overlay = "pomological_overlay.jpg",
-  outfile = NULL,
-  ...
-) {
-  requireNamespace('magick', quietly = TRUE)
-  requireNamespace('glue', quietly = TRUE)
-  if (!file.exists(pomological_background)) {
-    warning(glue::glue("Cannot find file \"{pomological_background}\", so you can have your plot back!"))
-    return(pomo_gg)
-  }
-  
-  # Paint figure
-  gg_fig <- magick::image_graph(width, height, bg = 'transparent', pointsize = pointsize, ...)
-  print(pomo_gg)
-  dev.off()
-  
-  if (!is.null(pomological_overlay) && file.exists(pomological_overlay)) {
-    pomo_over <- magick::image_read(pomological_overlay)
-    pomo_over <- magick::image_resize(pomo_over, glue::glue("{width}x{height}!"))
-    gg_fig <- magick::image_composite(gg_fig, pomo_over, "blend", compose_args = "15")
-  }
-  
-  # Paint background
-  pomo_bg <- magick::image_read(pomological_background)
-  pomo_bg <- magick::image_resize(pomo_bg, glue::glue("{width}x{height}!"))
-  pomo_bg <- magick::image_crop(pomo_bg, glue::glue("{width}x{height}"))
-  
-  # Paint figure onto background
-  pomo_img <- magick::image_composite(pomo_bg, gg_fig)
-  if (!is.null(outfile)) {
-    # Do you want your picture framed?
-    magick::image_write(pomo_img, outfile)
-  }
-  pomo_img
-}
-```
+**ggpomological** also provides a function named `paint_pomological` that uses the [`magick`][magick] package to add a pomological watercolor paper background and a subtle texture overlay.
 
 
 ## Demo!
 
-We'll need dplyr and ggplot2
+We'll need dplyr and ggplot2 (loaded with **ggpomological**)
 
 ```{r libraries, messages=FALSE, warning=FALSE}
+library(ggpomological)
 library(dplyr)
-library(ggplot2)
 ```
 
 ### Basic iris plot
@@ -257,13 +100,13 @@ basic_iris_plot
 
 # With pomological theme
 basic_iris_plot +
-  pomological_theme() +
+  theme_pomological() +
   scale_color_pomological()
 
 
 # With transparent background
 pomological_iris <- basic_iris_plot +
-  pomological_theme_nobg() +
+  theme_pomological_nobg() +
   scale_color_pomological()
 pomological_iris 
 
@@ -286,10 +129,10 @@ stacked_bar_plot <- ggplot(diamonds) +
   scale_x_continuous(label = scales::dollar_format()) +
   scale_fill_pomological()
 
-stacked_bar_plot + pomological_theme()
+stacked_bar_plot + theme_pomological()
 
 paint_pomological(
-  stacked_bar_plot + pomological_theme_nobg(),
+  stacked_bar_plot + theme_pomological_nobg(),
   res = 110
 ) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-bar-chart-painted.png")
@@ -309,10 +152,10 @@ density_plot <- mtcars %>%
   scale_color_pomological() +
   scale_fill_pomological()
 
-density_plot + pomological_theme()
+density_plot + theme_pomological()
 
 paint_pomological(
-  density_plot + pomological_theme_nobg(),
+  density_plot + theme_pomological_nobg(),
   res = 110
 ) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-density-demo-painted.png")
@@ -330,7 +173,7 @@ big_volume_cities <- txhousing %>%
   group_by(city) %>% 
   summarize(mean_volume = mean(volume, na.rm = TRUE)) %>% 
   arrange(-mean_volume) %>% 
-  top_n(length(pomological_palette)) %>% 
+  top_n(length(ggpomological:::pomological_palette)) %>% 
   pull(city)
 
 full_bar_stack_plot <- txhousing %>% 
@@ -346,10 +189,10 @@ full_bar_stack_plot <- txhousing %>%
   theme(panel.grid.minor.x = element_blank()) +
   scale_fill_pomological()
 
-full_bar_stack_plot + pomological_theme()
+full_bar_stack_plot + theme_pomological()
 
 paint_pomological(
-  full_bar_stack_plot + pomological_theme_nobg(),
+  full_bar_stack_plot + theme_pomological_nobg(),
   res = 110
 ) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-full-bar-stack-painted.png")
@@ -365,7 +208,7 @@ paint_pomological(
 ridges_pomological <- ggplot(diamonds) + 
   aes(x = carat, y = clarity, color = clarity, fill = clarity) + 
   ggridges::geom_density_ridges(alpha = 0.75) + 
-  pomological_theme_nobg(
+  theme_pomological_nobg(
     base_family = 'gWriting',
     base_size = 20,
     base_theme = ggridges::theme_ridges()
@@ -378,100 +221,3 @@ paint_pomological(ridges_pomological, res = 110) %>%
 ```
 
 ![](Readme_files/figure-gfm/plot-ridges-painted.png)
-
-
-
-## Appendix
-
-<details>
-<summary>Some functions I wrote while exploring colors, that may or may not work here.</summary>
-
-```{r appendix, eval=FALSE}
-# load all colors
-x <- readLines("pomological.css")
-x <- stringr::str_extract(x, "#[0-9a-f]{6}")
-x <- x[!is.na(x)]
-
-gg_color_hue <- function(n) {
-  hues = seq(15, 375, length = n + 1)
-  hcl(h = hues, l = 65, c = 100)[1:n]
-}
-
-col2hsv <- function(x) rgb2hsv(col2rgb(x))
-
-
-dist2ref_color <- function(color, ref_color) {
-  stopifnot(length(ref_color) == 1)
-  x <- col2hsv(c(color, ref_color)) %>% 
-    t %>%
-    dist %>%
-    as.matrix %>%
-    {tibble('ref_color' = .[length(color) + 1, 1:length(color)])}
-  names(x) <- ref_color
-  x
-}
-
-compare_to_ggplot <- function(compare_to_ggplot) {
-  pomo_gg <- map_dfr(set_names(compare_to_ggplot), ~ as_tibble(t(col2hsv(.))), .id = "color") %>% 
-    bind_cols(
-      map_dfc(gg_color_hue(set_names(length(compare_to_ggplot))), ~ dist2ref_color(compare_to_ggplot, .))
-    ) %>% 
-    tidyr::gather('ggplot_color', 'dist', -color:-v) %>% 
-    # group_by(color) %>% 
-    # do(dist = min(.$dist), ggplot_color = filter(., dist == min(.$dist))$ggplot_color) %>% 
-    # mutate(dist = map_dbl(dist, ~ .), ggplot_color = map_chr(ggplot_color, ~ .)) %>% 
-    # ungroup %>% 
-    mutate(ggplot_color = factor(ggplot_color, gg_color_hue(length(compare_to_ggplot)))) %>% 
-    arrange(ggplot_color)
-  warning(glue::glue("Palette has {length(compare_to_ggplot)} colors"), call. = FALSE)
-  ggplot(pomo_gg) +
-    aes(x = ggplot_color, y = dist, fill = color, label = color) +
-    geom_label(color = 'white')+
-    # geom_point(shape = 15, size = 5) +
-    scale_fill_identity()
-}
-
-data_frame(
-  'color' = color_options,
-  # 'group' = sample(c('pomo', 'logical'), length(color_options), replace = TRUE),
-  'x' = pmap_chr(tidyr::crossing(letters, letters), ~paste0(..1, ..2))[1:length(color_options)],
-  'y' = 1:length(color_options)
-) %>% 
-  ggplot() +
-  aes(x, y, fill = color) +
-  # geom_point(size = 8)+
-  geom_col()+
-  geom_text(aes(label = color), hjust = -0.1) +
-  scale_fill_identity() +
-  coord_flip() +
-  theme_minimal() +
-  #theme_xkcd() +
-  theme(
-    text = element_text(family = 'gWriting', size = 16),
-    plot.background = element_rect(fill = base_colors["paper_light"], color = NA),
-    panel.grid = element_line(color = "#efe1c6"),
-    axis.text = element_text(color = "#655843", size = 14)
-  )
-
-ordered_plot <- function(color_options, dichromat = FALSE) {
-  if (dichromat) {
-    dichr_type <- sample(c("deutan", "protan", "tritan"), 1)
-    message(glue::glue("color blindness: {dichr_type}"))
-    color_options <- dichromat::dichromat(color_options, dichr_type)
-  }
-  data_frame(
-    color = color_options,
-    x = 1,
-    y = 1:length(color_options)
-  ) %>% 
-    ggplot() +
-    aes(x, y, fill = color, label = color) +
-    geom_tile() +
-    geom_label(color = 'white') +
-    scale_fill_identity()+
-    scale_y_continuous(breaks = 1:length(color_options), labels = 1:length(color_options))+
-    theme_minimal()
-}
-```
-
-</details>
