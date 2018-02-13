@@ -9,9 +9,9 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=5)
+library(ggpomological)
+library(dplyr)
 ```
-
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
 ## Pomological Plots
 
@@ -28,6 +28,15 @@ knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=5)
 This package provides a ggplot2 theme inspired by the [USDA Pomological Watercolors collection][usda-pom] and by Aron Atkins's ([\@aronatkins][t-aronatkins]) [talk on parameterized RMarkdown][rsconf-video] at [rstudio::conf 2018][rstudioconf].
 
 ![](Readme_files/pom-examples.jpg)
+
+## Installation
+
+```r
+# If you don't have devtools installed
+install.packages("devtools")
+
+devtools::install_github("gadenbuie/ggpomological")
+```
 
 ## Color Palette
 
@@ -82,7 +91,7 @@ In the future, I might revisit this package to
 
 We'll need dplyr and ggplot2 (loaded with **ggpomological**)
 
-```{r libraries, messages=FALSE, warning=FALSE}
+```r
 library(ggpomological)
 library(dplyr)
 ```
@@ -202,7 +211,7 @@ paint_pomological(
 
 ### One last plot
 
-(in my handwriting)
+Using my own handwriting and the `ggridges` package.
 
 ```{r plot-ridges}
 ridges_pomological <- ggplot(diamonds) + 

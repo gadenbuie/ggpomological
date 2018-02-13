@@ -63,6 +63,7 @@ paint_pomological <- function(
 
 pomological_images <- function(which = c("background", "overlay")) {
   which <- match.arg(which)
-  system.file("inst/images", paste0("pomological_", which, ".png"),
+  exts <- c("background" = ".png", "overlay" = ".jpg")
+  system.file("images", paste0("pomological_", which, exts[which]),
               package = "ggpomological")
 }

@@ -3,8 +3,6 @@ Pomological Colors
 Garrick Aden-Buie
 2/4/2018
 
-<https://img.shields.io/badge/lifecycle-experimental-orange.svg>
-
 ## Pomological Plots
 
 <!-- Links -->
@@ -16,6 +14,15 @@ parameterized RMarkdown](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) at
 [rstudio::conf 2018](https://www.rstudio.com/conference/).
 
 ![](Readme_files/pom-examples.jpg)
+
+## Installation
+
+``` r
+# If you don't have devtools installed
+install.packages("devtools")
+
+devtools::install_github("gadenbuie/ggpomological")
+```
 
 ## Color Palette
 
@@ -89,24 +96,8 @@ We’ll need dplyr and ggplot2 (loaded with **ggpomological**)
 
 ``` r
 library(ggpomological)
-```
-
-    ## Loading required package: ggplot2
-
-``` r
 library(dplyr)
 ```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
 
 ### Basic iris plot
 
@@ -147,8 +138,6 @@ paint_pomological(pomological_iris, res = 110) %>%
   magick::image_write("Readme_files/figure-gfm/plot-demo-painted.png")
 ```
 
-    ## Warning: Cannot find file ""
-
 ![](Readme_files/figure-gfm/plot-demo-painted.png)
 
 ### Stacked bar chart
@@ -174,8 +163,6 @@ paint_pomological(
 ) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-bar-chart-painted.png")
 ```
-
-    ## Warning: Cannot find file ""
 
 ![](Readme_files/figure-gfm/plot-bar-chart-painted.png)
 
@@ -203,8 +190,6 @@ paint_pomological(
 ) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-density-demo-painted.png")
 ```
-
-    ## Warning: Cannot find file ""
 
 ![](Readme_files/figure-gfm/plot-density-demo-painted.png)
 
@@ -250,13 +235,11 @@ paint_pomological(
   magick::image_write("Readme_files/figure-gfm/plot-full-bar-stack-painted.png")
 ```
 
-    ## Warning: Cannot find file ""
-
 ![](Readme_files/figure-gfm/plot-full-bar-stack-painted.png)
 
 ### One last plot
 
-(in my handwriting)
+Using my own handwriting and the `ggridges` package.
 
 ``` r
 ridges_pomological <- ggplot(diamonds) + 
@@ -273,8 +256,6 @@ ridges_pomological <- ggplot(diamonds) +
 paint_pomological(ridges_pomological, res = 110) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-ridges-painted.png")
 ```
-
-    ## Warning: Cannot find file ""
 
     ## Picking joint bandwidth of 0.057
 
