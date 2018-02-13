@@ -4,14 +4,13 @@
 #' 
 #' @references https://usdawatercolors.nal.usda.gov/pom
 #' @seealso [ggplot2::theme]
-#' @param base_family Base text family
-#' @param base_size Base text size
+#' @param base_family,base_size Base text family and size
 #' @param text.color Color of all text (except axis text, see `axis.text.color`)
 #' @param plot.background.color Color of plot background, passed to `plot.background`
-#' @param panel.grid.color Color of panel grid, passed to `panel.grid`
-#' @param panel.grid.linetype Linetype of panel grid, passed to `panel.grid`
-#' @param axis.text.color Color of axis text
-#' @param axis.text.size Size of axis text
+#' @param panel.border.color Color of plot panel border
+#' @param with.panel.grid If `FALSE` gridlines in plot are removed
+#' @param panel.grid.color,panel.grid.linetype Color and linetype of panel grid, passed to `panel.grid`
+#' @param axis.text.color,axis.text.size Color and size of axis text
 #' @param base_theme Starting theme of plot, default is 
 #'   [ggplot2::theme_minimal()]. Any elements set by `theme_pomological()` will
 #'   overwrite the `base_theme` unless the specific parameter is explicitly set
@@ -25,15 +24,23 @@
 #' - [Homemade Apple](https://fonts.google.com/specimen/Homemade+Apple/)
 #' - [Amatic SC](https://fonts.google.com/specimen/Amatic+SC/)
 #' - [Mr. Bedfort](https://fonts.google.com/specimen/Mr+Bedfort/)
+#' 
+#' Fonts with R are notoriously tricky, so these may not work well for you. If
+#' you have installed the fonts but they aren't showing up or working, you can
+#' always try running `extrafont::font_import()` or `extrafont::load_fonts()` in
+#' the session or RMarkdown document. Or you can use [theme_pomological_plain()].
 #'
 #' @examples
 #' library(ggplot2)
 #' basic_iris_plot <- ggplot(iris) +
 #'   aes(x = Sepal.Length, y = Sepal.Width, color = Species) +
-#'   geom_point(size = 2)
+#'   geom_point(size = 2) +
+#'   # with pomological color scale
+#'   scale_color_pomological()
 #' 
 #' # Pomological Theme  
-#' basic_iris_plot + theme_pomological()
+#' basic_iris_plot + 
+#'   theme_pomological() 
 #' 
 #' # Don't change panel grid color
 #' basic_iris_plot + 
@@ -44,41 +51,51 @@
 #' # White background
 #' basic_iris_plot +
 #'   theme_pomological_nobg()
+#'   
+#' # Plain plot without font or background
+#' basic_iris_plot +
+#'   theme_pomological_plain()
 #' 
 #' @export
 theme_pomological <- function(
   base_family = 'Homemade Apple', 
   base_size = 16,
-  text.color = NULL,
-  plot.background.color = NULL,
-  panel.grid.color = NULL,
-  panel.grid.linetype = 'dashed',
-  axis.text.color = NULL,
+  text.color = pomological_base$dark_blue,
+  plot.background.color = pomological_base$paper,
+  panel.border.color = pomological_base$light_line,
+  with.panel.grid = FALSE,
+  panel.grid.color = pomological_base$light_line,
+  panel.grid.linetype = "dashed",
+  axis.text.color = pomological_base$medium_line,
   axis.text.size = base_size * 14/16,
   base_theme = ggplot2::theme_minimal()
 ) {
   if (!is.null(base_family)) check_font(base_family)
   
-  base_theme + 
+  base_theme +
     ggplot2::theme(
       text = ggplot2::element_text(
         family = base_family, 
         size = base_size, 
-        colour = ifelse(hasArg(text.color), text.color, pomological_base$dark_blue)
+        colour = text.color
       ),
       plot.background = ggplot2::element_rect(
-        fill = ifelse(hasArg(plot.background.color), plot.background.color, pomological_base$paper), 
+        fill = plot.background.color, 
         colour = NA
       ),
       panel.grid = ggplot2::element_line(
-        colour = ifelse(hasArg(panel.grid.color), panel.grid.color, pomological_base$light_line),
+        colour = panel.grid.color,
         linetype = panel.grid.linetype),
-      panel.grid.major = ggplot2::element_line(
-        colour = ifelse(hasArg(panel.grid.color), panel.grid.color, pomological_base$light_line),
-        linetype = panel.grid.linetype),
+      panel.border = ggplot2::element_rect(
+        color = panel.border.color,
+        fill = NA,
+        linetype = "solid",
+        size = 0.75
+      ),
+      panel.grid.major = if (!with.panel.grid) ggplot2::element_blank(),
       panel.grid.minor = ggplot2::element_blank(),
       axis.text = ggplot2::element_text(
-        colour = ifelse(hasArg(axis.text.color), axis.text.color, pomological_base$medium_line), 
+        colour = axis.text.color, 
         size = axis.text.size)
     )
 }
@@ -87,8 +104,19 @@ theme_pomological <- function(
 #' @export
 theme_pomological_nobg <- function(...) {
   dots <- list(...)
-  dots$plot.background.color <- 'transparent'
-  do.call('theme_pomological', args = dots)
+  dots$plot.background.color <- "transparent"
+  do.call("theme_pomological", args = dots)
+}
+
+#' @describeIn theme_pomological A "plain" pomological theme with white 
+#'   background and normal fonts.
+#' @export
+theme_pomological_plain <- function(...) {
+  dots <- list(...)
+  dots$plot.background.color <- "transparent"
+  if (!"base_family" %in% names(dots)) dots["base_family"] <- ""
+  if (!"base_size" %in% names(dots)) dots["base_size"] <- 11
+  do.call("theme_pomological", args = dots)
 }
 
 font_urls <- data.frame(
@@ -101,7 +129,7 @@ font_urls <- data.frame(
 )
 
 check_font <- function(font_name) {
-  if (!requireNamespace('extrafont', quietly = TRUE)) {
+  if (!requireNamespace("extrafont", quietly = TRUE)) {
     warning("The font \"", font_name, "\" may or may not be installed on your system.",
             "Please install the package `extrafont` if you'd like me to be able to check for you.")
   } else {
@@ -109,7 +137,7 @@ check_font <- function(font_name) {
       if (font_name %in% font_urls$name) {
         warning("Unable to find font '", font_name, "'. ", 
                 "If recently installed, please run `extrafonts::font_import()`. ",
-                "To install, visit: ", font_urls[font_urls$name == font_name, 'url'])
+                "To install, visit: ", font_urls[font_urls$name == font_name, "url"])
       } else {
         warning("Unable to find font '", font_name, "'. ", 
                 "If recently installed, please run `extrafonts::font_import()`. ")

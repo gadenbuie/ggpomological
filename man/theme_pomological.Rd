@@ -3,32 +3,36 @@
 \name{theme_pomological}
 \alias{theme_pomological}
 \alias{theme_pomological_nobg}
+\alias{theme_pomological_plain}
 \title{Pomological Theme}
 \usage{
 theme_pomological(base_family = "Homemade Apple", base_size = 16,
-  text.color = NULL, plot.background.color = NULL,
-  panel.grid.color = NULL, panel.grid.linetype = "dashed",
-  axis.text.color = NULL, axis.text.size = base_size * 14/16,
-  base_theme = ggplot2::theme_minimal())
+  text.color = pomological_base$dark_blue,
+  plot.background.color = pomological_base$paper,
+  panel.border.color = pomological_base$light_line, with.panel.grid = FALSE,
+  panel.grid.color = pomological_base$light_line,
+  panel.grid.linetype = "dashed",
+  axis.text.color = pomological_base$medium_line, axis.text.size = base_size
+  * 14/16, base_theme = ggplot2::theme_minimal())
 
 theme_pomological_nobg(...)
+
+theme_pomological_plain(...)
 }
 \arguments{
-\item{base_family}{Base text family}
-
-\item{base_size}{Base text size}
+\item{base_family, base_size}{Base text family and size}
 
 \item{text.color}{Color of all text (except axis text, see \code{axis.text.color})}
 
 \item{plot.background.color}{Color of plot background, passed to \code{plot.background}}
 
-\item{panel.grid.color}{Color of panel grid, passed to \code{panel.grid}}
+\item{panel.border.color}{Color of plot panel border}
 
-\item{panel.grid.linetype}{Linetype of panel grid, passed to \code{panel.grid}}
+\item{with.panel.grid}{If \code{FALSE} gridlines in plot are removed}
 
-\item{axis.text.color}{Color of axis text}
+\item{panel.grid.color, panel.grid.linetype}{Color and linetype of panel grid, passed to \code{panel.grid}}
 
-\item{axis.text.size}{Size of axis text}
+\item{axis.text.color, axis.text.size}{Color and size of axis text}
 
 \item{base_theme}{Starting theme of plot, default is
 \code{\link[ggplot2:theme_minimal]{ggplot2::theme_minimal()}}. Any elements set by \code{theme_pomological()} will
@@ -41,6 +45,9 @@ to \code{NULL}.}
 \section{Functions}{
 \itemize{
 \item \code{theme_pomological_nobg}: Pomological theme with white (transparent) background
+
+\item \code{theme_pomological_plain}: A "plain" pomological theme with white
+background and normal fonts.
 }}
 
 \section{Fonts}{
@@ -53,16 +60,24 @@ Visit the links below to install on your system.
 \item \href{https://fonts.google.com/specimen/Amatic+SC/}{Amatic SC}
 \item \href{https://fonts.google.com/specimen/Mr+Bedfort/}{Mr. Bedfort}
 }
+
+Fonts with R are notoriously tricky, so these may not work well for you. If
+you have installed the fonts but they aren't showing up or working, you can
+always try running \code{extrafont::font_import()} or \code{extrafont::load_fonts()} in
+the session or RMarkdown document. Or you can use \code{\link[=theme_pomological_plain]{theme_pomological_plain()}}.
 }
 
 \examples{
 library(ggplot2)
 basic_iris_plot <- ggplot(iris) +
   aes(x = Sepal.Length, y = Sepal.Width, color = Species) +
-  geom_point(size = 2)
+  geom_point(size = 2) +
+  # with pomological color scale
+  scale_color_pomological()
 
 # Pomological Theme  
-basic_iris_plot + theme_pomological()
+basic_iris_plot + 
+  theme_pomological() 
 
 # Don't change panel grid color
 basic_iris_plot + 
@@ -73,6 +88,10 @@ basic_iris_plot +
 # White background
 basic_iris_plot +
   theme_pomological_nobg()
+  
+# Plain plot without font or background
+basic_iris_plot +
+  theme_pomological_plain()
 
 }
 \references{

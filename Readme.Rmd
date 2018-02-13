@@ -27,6 +27,8 @@ library(dplyr)
 
 This package provides a ggplot2 theme inspired by the [USDA Pomological Watercolors collection][usda-pom] and by Aron Atkins's ([\@aronatkins][t-aronatkins]) [talk on parameterized RMarkdown][rsconf-video] at [rstudio::conf 2018][rstudioconf].
 
+![](Readme_files/figure-gfm/plot-bar-chart-painted.png)
+
 ![](Readme_files/pom-examples.jpg)
 
 ## Installation
@@ -57,11 +59,13 @@ I've also included a [css file](inst/pomological.css) with the complete collecti
 
 ## Setup theme and scales
 
-There are two theme-generating functions: 
+There are three theme-generating functions: 
 
 - `theme_pomological()` sets the plot theme to be representative of the paper and styling of the watercolors and includes a paper-colored background, 
 
-- and `theme_pomological_nobg()` has the same styling, just with a transparent (or white) background.
+- `theme_pomological_nobg()` has the same styling, just with a transparent (or white) background,
+
+- `theme_pomological_plain()` has a white background and doesn't change the font unless requested.
 
 A handwriting font is needed for the fully authentic pomological look, and I found a few from Google Fonts that fit the bill.
 
@@ -112,12 +116,14 @@ basic_iris_plot +
   theme_pomological() +
   scale_color_pomological()
 
-
 # With transparent background
 pomological_iris <- basic_iris_plot +
   theme_pomological_nobg() +
   scale_color_pomological()
 pomological_iris 
+
+# Without fonts
+pomological_iris + theme_pomological_plain()
 
 # Painted!
 paint_pomological(pomological_iris, res = 110) %>% 

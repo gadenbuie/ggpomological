@@ -13,6 +13,8 @@ Aron Atkins’s ([@aronatkins](https://twitter.com/aronatkins)) [talk on
 parameterized RMarkdown](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) at
 [rstudio::conf 2018](https://www.rstudio.com/conference/).
 
+![](Readme_files/figure-gfm/plot-bar-chart-painted.png)
+
 ![](Readme_files/pom-examples.jpg)
 
 ## Installation
@@ -50,14 +52,17 @@ collection of color samples.
 
 ## Setup theme and scales
 
-There are two theme-generating functions:
+There are three theme-generating functions:
 
   - `theme_pomological()` sets the plot theme to be representative of
     the paper and styling of the watercolors and includes a
     paper-colored background,
 
-  - and `theme_pomological_nobg()` has the same styling, just with a
-    transparent (or white) background.
+  - `theme_pomological_nobg()` has the same styling, just with a
+    transparent (or white) background,
+
+  - `theme_pomological_plain()` has a white background and doesn’t
+    change the font unless requested.
 
 A handwriting font is needed for the fully authentic pomological look,
 and I found a few from Google Fonts that fit the bill.
@@ -131,6 +136,13 @@ pomological_iris
 ```
 
 ![](Readme_files/figure-gfm/plot-demo-3.png)<!-- -->
+
+``` r
+# Without fonts
+pomological_iris + theme_pomological_plain()
+```
+
+![](Readme_files/figure-gfm/plot-demo-4.png)<!-- -->
 
 ``` r
 # Painted!
