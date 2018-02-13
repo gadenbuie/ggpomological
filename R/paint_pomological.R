@@ -34,6 +34,7 @@ paint_pomological <- function(
   }
   
   # Paint figure
+  pomo_gg <- pomo_gg + ggplot2::theme(plot.background = ggplot2::element_rect(fill = 'transparent', colour = NA))
   gg_fig <- magick::image_graph(width, height, bg = "transparent", pointsize = pointsize, ...)
   print(pomo_gg)
   dev.off()
