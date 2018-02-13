@@ -57,7 +57,7 @@ theme_pomological <- function(
   axis.text.size = base_size * 14/16,
   base_theme = ggplot2::theme_minimal()
 ) {
-  check_font(base_family)
+  if (!is.null(base_family)) check_font(base_family)
   
   base_theme + 
     ggplot2::theme(
