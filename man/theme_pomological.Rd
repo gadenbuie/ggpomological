@@ -6,21 +6,27 @@
 \alias{theme_pomological_plain}
 \title{Pomological Theme}
 \usage{
-theme_pomological(base_family = "Homemade Apple", base_size = 16,
+theme_pomological(base_family = "Homemade Apple", base_size = 18,
   text.color = pomological_base$dark_blue,
   plot.background.color = pomological_base$paper,
   panel.border.color = pomological_base$light_line, with.panel.grid = FALSE,
   panel.grid.color = pomological_base$light_line,
   panel.grid.linetype = "dashed",
   axis.text.color = pomological_base$medium_line, axis.text.size = base_size
-  * 14/16, base_theme = ggplot2::theme_minimal())
+  * 3/4, base_theme = ggplot2::theme_minimal())
 
 theme_pomological_nobg(...)
 
 theme_pomological_plain(...)
 }
 \arguments{
-\item{base_family, base_size}{Base text family and size}
+\item{base_family}{Base text family. See \strong{Fonts} in \code{\link[=theme_pomological]{theme_pomological()}}
+for some examples from Google Fonts options, including \code{"Mr De Haviland"},
+\code{"Homemade Apple"}, \code{"Marck Script"}, and \code{"Mr. Bedfort"}. For the
+authentic pomological look, use \code{"Homemade Apple"} or \code{"Mr De Haviland"}.
+Set to \code{NULL} or use \code{\link[=theme_pomological_plain]{theme_pomological_plain()}} for no change to fonts.}
+
+\item{base_size}{Base text size}
 
 \item{text.color}{Color of all text (except axis text, see \code{axis.text.color})}
 
@@ -57,7 +63,8 @@ The following fonts from \href{https://fonts.google.com}{Google Fonts} work well
 Visit the links below to install on your system.
 \itemize{
 \item \href{https://fonts.google.com/specimen/Homemade+Apple/}{Homemade Apple}
-\item \href{https://fonts.google.com/specimen/Amatic+SC/}{Amatic SC}
+\item \href{https://fonts.google.com/specimen/Mr+De+Haviland}{Mr. De Haviland}
+\item \href{https://fonts.google.com/specimen/Marck+Script/}{Marck Script}
 \item \href{https://fonts.google.com/specimen/Mr+Bedfort/}{Mr. Bedfort}
 }
 

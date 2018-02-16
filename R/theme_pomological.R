@@ -4,7 +4,12 @@
 #' 
 #' @references https://usdawatercolors.nal.usda.gov/pom
 #' @seealso [ggplot2::theme]
-#' @param base_family,base_size Base text family and size
+#' @param base_family Base text family. See **Fonts** in [theme_pomological()] 
+#'   for some examples from Google Fonts options, including `"Mr De Haviland"`, 
+#'   `"Homemade Apple"`, `"Marck Script"`, and `"Mr. Bedfort"`. For the 
+#'   authentic pomological look, use `"Homemade Apple"` or `"Mr De Haviland"`. 
+#'   Set to `NULL` or use [theme_pomological_plain()] for no change to fonts.
+#' @param base_size Base text size
 #' @param text.color Color of all text (except axis text, see `axis.text.color`)
 #' @param plot.background.color Color of plot background, passed to `plot.background`
 #' @param panel.border.color Color of plot panel border
@@ -22,7 +27,8 @@
 #' Visit the links below to install on your system.
 #' 
 #' - [Homemade Apple](https://fonts.google.com/specimen/Homemade+Apple/)
-#' - [Amatic SC](https://fonts.google.com/specimen/Amatic+SC/)
+#' - [Mr. De Haviland](https://fonts.google.com/specimen/Mr+De+Haviland)
+#' - [Marck Script](https://fonts.google.com/specimen/Marck+Script/)
 #' - [Mr. Bedfort](https://fonts.google.com/specimen/Mr+Bedfort/)
 #' 
 #' Fonts with R are notoriously tricky, so these may not work well for you. If
@@ -58,8 +64,8 @@
 #' 
 #' @export
 theme_pomological <- function(
-  base_family = 'Homemade Apple', 
-  base_size = 16,
+  base_family = "Homemade Apple", 
+  base_size = 14,
   text.color = pomological_base$dark_blue,
   plot.background.color = pomological_base$paper,
   panel.border.color = pomological_base$light_line,
@@ -67,7 +73,7 @@ theme_pomological <- function(
   panel.grid.color = pomological_base$light_line,
   panel.grid.linetype = "dashed",
   axis.text.color = pomological_base$medium_line,
-  axis.text.size = base_size * 14/16,
+  axis.text.size = base_size * 3/4,
   base_theme = ggplot2::theme_minimal()
 ) {
   if (!is.null(base_family)) check_font(base_family)
@@ -120,10 +126,11 @@ theme_pomological_plain <- function(...) {
 }
 
 font_urls <- data.frame(
-  name = c("Homemade Apple", "Amatic SC", "Mr. Bedfort"),
+  name = c("Mr De Haviland", "Homemade Apple", "Marck Script", "Mr. Bedfort"),
   url  = c(
+    "https://fonts.google.com/specimen/Mr+De+Haviland",
     "https://fonts.google.com/specimen/Homemade+Apple/",
-    "https://fonts.google.com/specimen/Amatic+SC/",
+    "https://fonts.google.com/specimen/Marck+Script/",
     "https://fonts.google.com/specimen/Mr+Bedfort/"
   )
 )
@@ -131,16 +138,19 @@ font_urls <- data.frame(
 check_font <- function(font_name) {
   if (!requireNamespace("extrafont", quietly = TRUE)) {
     warning("The font \"", font_name, "\" may or may not be installed on your system.",
-            "Please install the package `extrafont` if you'd like me to be able to check for you.")
+            "Please install the package `extrafont` if you'd like me to be able to check for you.",
+            call. = FALSE)
   } else {
     if (!font_name %in% extrafont::fonts()) {
       if (font_name %in% font_urls$name) {
-        warning("Unable to find font '", font_name, "'. ", 
-                "If recently installed, please run `extrafonts::font_import()`. ",
-                "To install, visit: ", font_urls[font_urls$name == font_name, "url"])
+        warning("Font '", font_name, "' isn't in the extrafonts font list (but it may still work). ", 
+                "If recently installed, you can try running `extrafonts::font_import()`. ",
+                "To install, visit: ", font_urls[font_urls$name == font_name, "url"],
+                call. = FALSE)
       } else {
-        warning("Unable to find font '", font_name, "'. ", 
-                "If recently installed, please run `extrafonts::font_import()`. ")
+        warning("Font '", font_name, "' isn't in the extrafonts font list (but it may still work). ", 
+                "If recently installed, you can try running `extrafonts::font_import()`. ",
+                call. = FALSE)
       }
     }
   }

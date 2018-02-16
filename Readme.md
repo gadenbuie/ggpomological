@@ -67,8 +67,9 @@ There are three theme-generating functions:
 A handwriting font is needed for the fully authentic pomological look,
 and I found a few from Google Fonts that fit the bill.
 
+  - [Mr. De Haviland](https://fonts.google.com/specimen/Mr+De+Haviland)
   - [Homemade Apple](https://fonts.google.com/specimen/Homemade+Apple/)
-  - [Amatic SC](https://fonts.google.com/specimen/Amatic+SC/)
+  - [Marck Script](https://fonts.google.com/specimen/Marck+Script/)
   - [Mr. Bedfort](https://fonts.google.com/specimen/Mr+Bedfort/)
 
 Alternatively, use something like
@@ -119,27 +120,29 @@ basic_iris_plot
 ![](Readme_files/figure-gfm/plot-demo-1.png)<!-- -->
 
 ``` r
-# With pomological theme
-basic_iris_plot +
-  theme_pomological() +
+# With pomological colors
+basic_iris_plot <- basic_iris_plot +
   scale_color_pomological()
+basic_iris_plot
 ```
 
 ![](Readme_files/figure-gfm/plot-demo-2.png)<!-- -->
 
 ``` r
+# With pomological theme
+pomological_iris <- basic_iris_plot + theme_pomological()
+
 # With transparent background
-pomological_iris <- basic_iris_plot +
-  theme_pomological_nobg() +
-  scale_color_pomological()
-pomological_iris 
+basic_iris_plot +
+  theme_pomological_nobg() 
 ```
 
 ![](Readme_files/figure-gfm/plot-demo-3.png)<!-- -->
 
 ``` r
-# Without fonts
-pomological_iris + theme_pomological_plain()
+# Or with "plain" pomological
+basic_iris_plot +
+  theme_pomological_plain() 
 ```
 
 ![](Readme_files/figure-gfm/plot-demo-4.png)<!-- -->
@@ -160,6 +163,7 @@ stacked_bar_plot <- ggplot(diamonds) +
   geom_histogram(binwidth = 850) + 
   xlab('Price (USD)') + 
   ylab('Count') + 
+  ggtitle("ggpomological") +
   scale_x_continuous(label = scales::dollar_format()) +
   scale_fill_pomological()
 
