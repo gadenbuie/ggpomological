@@ -19,6 +19,9 @@ parameterized RMarkdown](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) at
 
 ## Installation
 
+This package isn’t on CRAN, so you’ll need to use the devtools package
+to install it.
+
 ``` r
 # If you don't have devtools installed
 install.packages("devtools")
@@ -98,7 +101,7 @@ texture overlay.
 
 ## Demo\!
 
-We’ll need dplyr and ggplot2 (loaded with **ggpomological**)
+We’ll need ggplot2 (loaded with **ggpomological**) and dplyr
 
 ``` r
 library(ggpomological)
@@ -121,8 +124,7 @@ basic_iris_plot
 
 ``` r
 # With pomological colors
-basic_iris_plot <- basic_iris_plot +
-  scale_color_pomological()
+basic_iris_plot <- basic_iris_plot + scale_color_pomological()
 basic_iris_plot
 ```
 
@@ -131,21 +133,24 @@ basic_iris_plot
 ``` r
 # With pomological theme
 pomological_iris <- basic_iris_plot + theme_pomological()
-
-# With transparent background
-basic_iris_plot +
-  theme_pomological_nobg() 
+pomological_iris
 ```
 
 ![](Readme_files/figure-gfm/plot-demo-3.png)<!-- -->
 
 ``` r
-# Or with "plain" pomological
-basic_iris_plot +
-  theme_pomological_plain() 
+# With transparent background
+basic_iris_plot + theme_pomological_nobg() 
 ```
 
 ![](Readme_files/figure-gfm/plot-demo-4.png)<!-- -->
+
+``` r
+# Or with "plain" pomological
+basic_iris_plot + theme_pomological_plain() 
+```
+
+![](Readme_files/figure-gfm/plot-demo-5.png)<!-- -->
 
 ``` r
 # Painted!
