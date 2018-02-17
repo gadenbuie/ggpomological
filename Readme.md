@@ -13,7 +13,7 @@ Aron Atkins’s ([@aronatkins](https://twitter.com/aronatkins)) [talk on
 parameterized RMarkdown](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) at
 [rstudio::conf 2018](https://www.rstudio.com/conference/).
 
-![](Readme_files/figure-gfm/plot-bar-chart-painted.png)
+![](Readme_files/figure-gfm/ggpomological.png)
 
 ![](Readme_files/pom-examples.jpg)
 

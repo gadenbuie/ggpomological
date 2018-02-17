@@ -27,7 +27,24 @@ library(dplyr)
 
 This package provides a ggplot2 theme inspired by the [USDA Pomological Watercolors collection][usda-pom] and by Aron Atkins's ([\@aronatkins][t-aronatkins]) [talk on parameterized RMarkdown][rsconf-video] at [rstudio::conf 2018][rstudioconf].
 
-![](Readme_files/figure-gfm/plot-bar-chart-painted.png)
+```{r header-demo, echo=FALSE, message=FALSE, warning=FALSE}
+fruits <- c("Apple", "Apricot", "Banana", "Fig", "Cherry", "Kiwi", "Grape", "Mango", "Papaya", "Orange", "Peach", "Pear")
+readr::read_tsv("https://cs.joensuu.fi/sipu/datasets/Compound.txt", col_names = FALSE) %>% 
+  filter(X3 < 10) %>% 
+  mutate(X3 = sample(fruits, length(unique(X3)))[X3]) %>% 
+  {
+    ggplot(., aes(x = X1, y = X2, color = X3)) + 
+      geom_point() + 
+      labs(x = "Space", y = "Time", 
+           color = "Fruit", title = "ggpomological") +
+      scale_color_pomological() + 
+      theme_pomological()
+  } %>% 
+  paint_pomological(res = 110) %>% 
+  magick::image_write("Readme_files/figure-gfm/ggpomological.png")
+```
+
+![](Readme_files/figure-gfm/ggpomological.png)
 
 ![](Readme_files/pom-examples.jpg)
 
