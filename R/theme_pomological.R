@@ -48,15 +48,13 @@
 #' basic_iris_plot + 
 #'   theme_pomological() 
 #' 
-#' # Don't change panel grid color
+#' # With fonts (manual)
 #' basic_iris_plot + 
-#'   theme_pomological(
-#'     panel.grid.color = NULL
-#'   )
+#'   theme_pomological("Homemade Apple", 16)
 #'   
-#' # White background
+#' # Or with fancy alias (same as previous)
 #' basic_iris_plot +
-#'   theme_pomological_nobg()
+#'   theme_pomological_fancy()
 #'   
 #' # Plain plot without font or background
 #' basic_iris_plot +
@@ -64,8 +62,8 @@
 #' 
 #' @export
 theme_pomological <- function(
-  base_family = "Homemade Apple", 
-  base_size = 14,
+  base_family = NULL, 
+  base_size = 11,
   text.color = pomological_base$dark_blue,
   plot.background.color = pomological_base$paper,
   panel.border.color = pomological_base$light_line,
@@ -81,7 +79,7 @@ theme_pomological <- function(
   base_theme +
     ggplot2::theme(
       text = ggplot2::element_text(
-        family = base_family, 
+        family = if (!is.null(base_family)) base_family, 
         size = base_size, 
         colour = text.color
       ),
@@ -108,21 +106,21 @@ theme_pomological <- function(
 
 #' @describeIn theme_pomological Pomological theme with white (transparent) background
 #' @export
-theme_pomological_nobg <- function(...) {
-  dots <- list(...)
-  dots$plot.background.color <- "transparent"
-  do.call("theme_pomological", args = dots)
+theme_pomological_nobg <- function(..., plot.background.color = "transparent") {
+  theme_pomological(plot.background.color = plot.background.color, ...)
 }
 
 #' @describeIn theme_pomological A "plain" pomological theme with white 
-#'   background and normal fonts.
+#'   background and normal fonts. 
 #' @export
-theme_pomological_plain <- function(...) {
-  dots <- list(...)
-  dots$plot.background.color <- "transparent"
-  if (!"base_family" %in% names(dots)) dots["base_family"] <- ""
-  if (!"base_size" %in% names(dots)) dots["base_size"] <- 11
-  do.call("theme_pomological", args = dots)
+theme_pomological_plain <- function(base_family = "", base_size = 11, plot.background.color = "transparent", ...) {
+  theme_pomological(base_family, base_size, plot.background.color = plot.background.color, ...)
+}
+
+#' @describeIn theme_pomological A "fancy" pomological theme with fancy fonts
+#' @export
+theme_pomological_fancy <- function(base_family = "Homemade Apple", base_size = 16, ...) {
+  theme_pomological(base_family, base_size, ...)
 }
 
 font_urls <- data.frame(

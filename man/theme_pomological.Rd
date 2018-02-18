@@ -4,9 +4,10 @@
 \alias{theme_pomological}
 \alias{theme_pomological_nobg}
 \alias{theme_pomological_plain}
+\alias{theme_pomological_fancy}
 \title{Pomological Theme}
 \usage{
-theme_pomological(base_family = "Homemade Apple", base_size = 18,
+theme_pomological(base_family = NULL, base_size = 11,
   text.color = pomological_base$dark_blue,
   plot.background.color = pomological_base$paper,
   panel.border.color = pomological_base$light_line, with.panel.grid = FALSE,
@@ -15,9 +16,12 @@ theme_pomological(base_family = "Homemade Apple", base_size = 18,
   axis.text.color = pomological_base$medium_line, axis.text.size = base_size
   * 3/4, base_theme = ggplot2::theme_minimal())
 
-theme_pomological_nobg(...)
+theme_pomological_nobg(..., plot.background.color = "transparent")
 
-theme_pomological_plain(...)
+theme_pomological_plain(base_family = "", base_size = 11,
+  plot.background.color = "transparent", ...)
+
+theme_pomological_fancy(base_family = "Homemade Apple", base_size = 16, ...)
 }
 \arguments{
 \item{base_family}{Base text family. See \strong{Fonts} in \code{\link[=theme_pomological]{theme_pomological()}}
@@ -54,6 +58,8 @@ to \code{NULL}.}
 
 \item \code{theme_pomological_plain}: A "plain" pomological theme with white
 background and normal fonts.
+
+\item \code{theme_pomological_fancy}: A "fancy" pomological theme with fancy fonts
 }}
 
 \section{Fonts}{
@@ -86,15 +92,13 @@ basic_iris_plot <- ggplot(iris) +
 basic_iris_plot + 
   theme_pomological() 
 
-# Don't change panel grid color
+# With fonts (manual)
 basic_iris_plot + 
-  theme_pomological(
-    panel.grid.color = NULL
-  )
+  theme_pomological("Homemade Apple", 16)
   
-# White background
+# Or with fancy alias (same as previous)
 basic_iris_plot +
-  theme_pomological_nobg()
+  theme_pomological_fancy()
   
 # Plain plot without font or background
 basic_iris_plot +

@@ -1,5 +1,5 @@
 Package: ggpomological
-Version: 0.1.0
+Version: 0.1.1
 Title: Pomological plot themes for ggplot2
 Description: Pomological plot themes and scales for ggplot2 (in progress)
 Authors@R: person("Garrick", "Aden-Buie", , "g.adenbuie@gmail.com", c("aut", "cre"))

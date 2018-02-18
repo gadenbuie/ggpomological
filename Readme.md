@@ -1,9 +1,6 @@
 Pomological Colors
 ================
 Garrick Aden-Buie
-2/4/2018
-
-## Pomological Plots
 
 <!-- Links -->
 
@@ -15,7 +12,7 @@ parameterized RMarkdown](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) at
 
 ![](Readme_files/figure-gfm/ggpomological.png)
 
-![](Readme_files/pom-examples.jpg)
+![](Readme_files/pom-examples.jpg)\[1\]
 
 ## Installation
 
@@ -61,11 +58,26 @@ There are three theme-generating functions:
     the paper and styling of the watercolors and includes a
     paper-colored background,
 
-  - `theme_pomological_nobg()` has the same styling, just with a
+  - `theme_pomological_plain()` has the same styling, just with a
     transparent (or white) background,
 
-  - `theme_pomological_plain()` has a white background and doesn’t
-    change the font unless requested.
+  - `theme_pomological_fancy()` has the paper-colored background and
+    defaults to a fancy handwritten font ([Homemade
+    Apple](https://fonts.google.com/specimen/Homemade+Apple/)).
+
+For color and fill scales, **ggpomological** provides
+`scale_color_pomological()` and `scale_fill_pomological()`.
+
+In the future, I might revisit this package to
+
+1.  Increase colors in discrete scale
+
+2.  Setup paired color scales. Lots of great color pairs in the
+    extracted colors.
+
+3.  Set up continuous scale colors (we’ll see…)
+
+## Fonts
 
 A handwriting font is needed for the fully authentic pomological look,
 and I found a few from Google Fonts that fit the bill.
@@ -79,17 +91,11 @@ Alternatively, use something like
 [calligrapher.com](https://www.calligraphr.com/) to create your own
 handwriting font\!
 
-For color and fill scales, **ggpomological** provides
-`scale_color_pomological()` and `scale_fill_pomological()`.
-
-In the future, I might revisit this package to
-
-1.  Increase colors in discrete scale
-
-2.  Setup paired color scales. Lots of great color pairs in the
-    extracted colors.
-
-3.  Set up continuous scale colors (we’ll see…)
+But fonts can be painful in R, so the base functions –
+`theme_pomological()` and `theme_pomological_plain()` – don’t change the
+font by default. To opt into the full pomological effect, use
+`theme_pomological_fancy()` which is just an alias for
+`theme_pomological(base_family = "Homemade Apple", base_size = 16)`.
 
 ## Add paper background\!
 
@@ -107,6 +113,11 @@ We’ll need ggplot2 (loaded with **ggpomological**) and dplyr
 library(ggpomological)
 library(dplyr)
 ```
+
+**Warning**: If you don’t have the [above fonts](#fonts) installed,
+you’ll get an error message with a lot of warnings when running the
+below examples. Just replace `theme_pomological("Homemade Apple", 16)`
+with `theme_pomological()` for the basic theme without the crazy fonts.
 
 ### Basic iris plot
 
@@ -132,27 +143,22 @@ basic_iris_plot
 
 ``` r
 # With pomological theme
-pomological_iris <- basic_iris_plot + theme_pomological()
-pomological_iris
+basic_iris_plot + theme_pomological()
 ```
 
 ![](Readme_files/figure-gfm/plot-demo-3.png)<!-- -->
 
 ``` r
 # With transparent background
-basic_iris_plot + theme_pomological_nobg() 
+basic_iris_plot + theme_pomological_plain() 
 ```
 
 ![](Readme_files/figure-gfm/plot-demo-4.png)<!-- -->
 
 ``` r
-# Or with "plain" pomological
-basic_iris_plot + theme_pomological_plain() 
-```
+# Or with "fancy" pomological settings
+pomological_iris <- basic_iris_plot + theme_pomological_fancy()
 
-![](Readme_files/figure-gfm/plot-demo-5.png)<!-- -->
-
-``` r
 # Painted!
 paint_pomological(pomological_iris, res = 110) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-demo-painted.png")
@@ -172,14 +178,14 @@ stacked_bar_plot <- ggplot(diamonds) +
   scale_x_continuous(label = scales::dollar_format()) +
   scale_fill_pomological()
 
-stacked_bar_plot + theme_pomological()
+stacked_bar_plot + theme_pomological("Homemade Apple", 16)
 ```
 
 ![](Readme_files/figure-gfm/plot-bar-chart-1.png)<!-- -->
 
 ``` r
 paint_pomological(
-  stacked_bar_plot + theme_pomological_nobg(),
+  stacked_bar_plot + theme_pomological_fancy(),
   res = 110
 ) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-bar-chart-painted.png")
@@ -199,14 +205,14 @@ density_plot <- mtcars %>%
   scale_color_pomological() +
   scale_fill_pomological()
 
-density_plot + theme_pomological()
+density_plot + theme_pomological("Homemade Apple", 16)
 ```
 
 ![](Readme_files/figure-gfm/plot-density-1.png)<!-- -->
 
 ``` r
 paint_pomological(
-  density_plot + theme_pomological_nobg(),
+  density_plot + theme_pomological_fancy(),
   res = 110
 ) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-density-demo-painted.png")
@@ -243,14 +249,14 @@ full_bar_stack_plot <- txhousing %>%
   theme(panel.grid.minor.x = element_blank()) +
   scale_fill_pomological()
 
-full_bar_stack_plot + theme_pomological()
+full_bar_stack_plot + theme_pomological("Homemade Apple", 16)
 ```
 
 ![](Readme_files/figure-gfm/plot-full-bar-stack-1.png)<!-- -->
 
 ``` r
 paint_pomological(
-  full_bar_stack_plot + theme_pomological_nobg(),
+  full_bar_stack_plot + theme_pomological_fancy(),
   res = 110
 ) %>% 
   magick::image_write("Readme_files/figure-gfm/plot-full-bar-stack-painted.png")
@@ -266,7 +272,7 @@ Using my own handwriting and the `ggridges` package.
 ridges_pomological <- ggplot(diamonds) + 
   aes(x = carat, y = clarity, color = clarity, fill = clarity) + 
   ggridges::geom_density_ridges(alpha = 0.75) + 
-  theme_pomological_nobg(
+  theme_pomological(
     base_family = 'gWriting',
     base_size = 20,
     base_theme = ggridges::theme_ridges()
@@ -281,3 +287,7 @@ paint_pomological(ridges_pomological, res = 110) %>%
     ## Picking joint bandwidth of 0.057
 
 ![](Readme_files/figure-gfm/plot-ridges-painted.png)
+
+1.  U.S. Department of Agriculture Pomological Watercolor Collection.
+    Rare and Special Collections, National Agricultural Library,
+    Beltsville, MD 20705
