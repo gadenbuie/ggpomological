@@ -2,18 +2,6 @@ Pomological Colors
 ================
 Garrick Aden-Buie
 
-<!-- Links -->
-
-This package provides a ggplot2 theme inspired by the [USDA Pomological
-Watercolors collection](https://usdawatercolors.nal.usda.gov/pom) and by
-Aron Atkins’s ([@aronatkins](https://twitter.com/aronatkins)) [talk on
-parameterized RMarkdown](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) at
-[rstudio::conf 2018](https://www.rstudio.com/conference/).
-
-![](Readme_files/figure-gfm/ggpomological.png)
-
-![](Readme_files/pom-examples.jpg)\[1\]
-
 ## Installation
 
 This package isn’t on CRAN, so you’ll need to use the devtools package
@@ -24,7 +12,24 @@ to install it.
 install.packages("devtools")
 
 devtools::install_github("gadenbuie/ggpomological")
+
+# To include the vignette
+devtools::install_github("gadenbuie/ggpomological", build_vignettes=TRUE)
 ```
+
+## Introduction
+
+<!-- Links -->
+
+This package provides a ggplot2 theme inspired by the [USDA Pomological
+Watercolors collection](https://usdawatercolors.nal.usda.gov/pom) and by
+Aron Atkins’s ([@aronatkins](https://twitter.com/aronatkins)) [talk on
+parameterized RMarkdown](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) at
+[rstudio::conf 2018](https://www.rstudio.com/conference/).
+
+![](Readme_files/figure-gfm/ggpomological-1.png)<!-- -->
+
+![](Readme_files/pom-examples.jpg)<!-- -->[^1]
 
 ## Color Palette
 
@@ -37,7 +42,7 @@ few that I thought worked well together for color and fill scales
 scales::show_col(ggpomological:::pomological_palette)
 ```
 
-![](Readme_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
 and a few colors for the plot background and decoration
 
@@ -131,40 +136,43 @@ basic_iris_plot <- ggplot(iris) +
 basic_iris_plot 
 ```
 
-![](Readme_files/figure-gfm/plot-demo-1.png)<!-- -->
+![](Readme_files/figure-gfm/plot-demo-2.png)<!-- -->
 
 ``` r
+
 # With pomological colors
 basic_iris_plot <- basic_iris_plot + scale_color_pomological()
 basic_iris_plot
 ```
 
-![](Readme_files/figure-gfm/plot-demo-2.png)<!-- -->
-
-``` r
-# With pomological theme
-basic_iris_plot + theme_pomological()
-```
-
 ![](Readme_files/figure-gfm/plot-demo-3.png)<!-- -->
 
 ``` r
-# With transparent background
-basic_iris_plot + theme_pomological_plain() 
+
+# With pomological theme
+basic_iris_plot + theme_pomological()
 ```
 
 ![](Readme_files/figure-gfm/plot-demo-4.png)<!-- -->
 
 ``` r
+
+# With transparent background
+basic_iris_plot + theme_pomological_plain() 
+```
+
+![](Readme_files/figure-gfm/plot-demo-5.png)<!-- -->
+
+``` r
+
 # Or with "fancy" pomological settings
 pomological_iris <- basic_iris_plot + theme_pomological_fancy()
 
 # Painted!
-paint_pomological(pomological_iris, res = 110) %>% 
-  magick::image_write("Readme_files/figure-gfm/plot-demo-painted.png")
+paint_pomological(pomological_iris, res = 110)
 ```
 
-![](Readme_files/figure-gfm/plot-demo-painted.png)
+![](Readme_files/figure-gfm/plot-demo-1.png)<!-- -->
 
 ### Stacked bar chart
 
@@ -181,17 +189,17 @@ stacked_bar_plot <- ggplot(diamonds) +
 stacked_bar_plot + theme_pomological("Homemade Apple", 16)
 ```
 
-![](Readme_files/figure-gfm/plot-bar-chart-1.png)<!-- -->
+![](Readme_files/figure-gfm/plot-bar-chart-2.png)<!-- -->
 
 ``` r
+
 paint_pomological(
   stacked_bar_plot + theme_pomological_fancy(),
   res = 110
-) %>% 
-  magick::image_write("Readme_files/figure-gfm/plot-bar-chart-painted.png")
+)
 ```
 
-![](Readme_files/figure-gfm/plot-bar-chart-painted.png)
+![](Readme_files/figure-gfm/plot-bar-chart-1.png)<!-- -->
 
 ### Density Plot
 
@@ -208,17 +216,17 @@ density_plot <- mtcars %>%
 density_plot + theme_pomological("Homemade Apple", 16)
 ```
 
-![](Readme_files/figure-gfm/plot-density-1.png)<!-- -->
+![](Readme_files/figure-gfm/plot-density-2.png)<!-- -->
 
 ``` r
+
 paint_pomological(
   density_plot + theme_pomological_fancy(),
   res = 110
-) %>% 
-  magick::image_write("Readme_files/figure-gfm/plot-density-demo-painted.png")
+)
 ```
 
-![](Readme_files/figure-gfm/plot-density-demo-painted.png)
+![](Readme_files/figure-gfm/plot-density-1.png)<!-- -->
 
 ### Points and lines
 
@@ -231,11 +239,8 @@ big_volume_cities <- txhousing %>%
   arrange(-mean_volume) %>% 
   top_n(length(ggpomological:::pomological_palette)) %>% 
   pull(city)
-```
+#> Selecting by mean_volume
 
-    ## Selecting by mean_volume
-
-``` r
 full_bar_stack_plot <- txhousing %>% 
   filter(city %in% big_volume_cities) %>% 
   group_by(city, year) %>% 
@@ -252,17 +257,17 @@ full_bar_stack_plot <- txhousing %>%
 full_bar_stack_plot + theme_pomological("Homemade Apple", 16)
 ```
 
-![](Readme_files/figure-gfm/plot-full-bar-stack-1.png)<!-- -->
+![](Readme_files/figure-gfm/plot-full-bar-stack-2.png)<!-- -->
 
 ``` r
+
 paint_pomological(
   full_bar_stack_plot + theme_pomological_fancy(),
   res = 110
-) %>% 
-  magick::image_write("Readme_files/figure-gfm/plot-full-bar-stack-painted.png")
+)
 ```
 
-![](Readme_files/figure-gfm/plot-full-bar-stack-painted.png)
+![](Readme_files/figure-gfm/plot-full-bar-stack-1.png)<!-- -->
 
 ### One last plot
 
@@ -280,13 +285,11 @@ ridges_pomological <- ggplot(diamonds) +
   scale_fill_pomological() + 
   scale_color_pomological()
 
-paint_pomological(ridges_pomological, res = 110) %>% 
-  magick::image_write("Readme_files/figure-gfm/plot-ridges-painted.png")
+paint_pomological(ridges_pomological, res = 110)
+#> Picking joint bandwidth of 0.057
 ```
 
-    ## Picking joint bandwidth of 0.057
-
-![](Readme_files/figure-gfm/plot-ridges-painted.png)
+![](Readme_files/figure-gfm/plot-ridges-1.png)<!-- -->
 
 1.  U.S. Department of Agriculture Pomological Watercolor Collection.
     Rare and Special Collections, National Agricultural Library,
