@@ -141,13 +141,13 @@ check_font <- function(font_name) {
   } else {
     if (!font_name %in% extrafont::fonts()) {
       if (font_name %in% font_urls$name) {
-        warning("Font '", font_name, "' isn't in the extrafonts font list (but it may still work). ", 
-                "If recently installed, you can try running `extrafonts::font_import()`. ",
+        warning("Font '", font_name, "' isn't in the extrafont font list (but it may still work). ", 
+                "If recently installed, you can try running `extrafont::font_import()`. ",
                 "To install, visit: ", font_urls[font_urls$name == font_name, "url"],
                 call. = FALSE)
       } else {
-        warning("Font '", font_name, "' isn't in the extrafonts font list (but it may still work). ", 
-                "If recently installed, you can try running `extrafonts::font_import()`. ",
+        warning("Font '", font_name, "' isn't in the extrafont font list (but it may still work). ", 
+                "If recently installed, you can try running `extrafont::font_import()`. ",
                 call. = FALSE)
       }
     }
