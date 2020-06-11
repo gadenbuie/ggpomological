@@ -7,19 +7,28 @@
 \alias{theme_pomological_fancy}
 \title{Pomological Theme}
 \usage{
-theme_pomological(base_family = NULL, base_size = 11,
+theme_pomological(
+  base_family = NULL,
+  base_size = 11,
   text.color = pomological_base$dark_blue,
   plot.background.color = pomological_base$paper,
-  panel.border.color = pomological_base$light_line, with.panel.grid = FALSE,
+  panel.border.color = pomological_base$light_line,
+  with.panel.grid = FALSE,
   panel.grid.color = pomological_base$light_line,
   panel.grid.linetype = "dashed",
-  axis.text.color = pomological_base$medium_line, axis.text.size = base_size
-  * 3/4, base_theme = ggplot2::theme_minimal())
+  axis.text.color = pomological_base$medium_line,
+  axis.text.size = base_size * 3/4,
+  base_theme = ggplot2::theme_minimal()
+)
 
 theme_pomological_nobg(..., plot.background.color = "transparent")
 
-theme_pomological_plain(base_family = "", base_size = 11,
-  plot.background.color = "transparent", ...)
+theme_pomological_plain(
+  base_family = "",
+  base_size = 11,
+  plot.background.color = "transparent",
+  ...
+)
 
 theme_pomological_fancy(base_family = "Homemade Apple", base_size = 16, ...)
 }
@@ -82,27 +91,36 @@ the session or RMarkdown document. Or you can use \code{\link[=theme_pomological
 
 \examples{
 library(ggplot2)
-basic_iris_plot <- ggplot(iris) +
-  aes(x = Sepal.Length, y = Sepal.Width, color = Species) +
+
+# Prep msleep data
+msleep <- ggplot2::msleep[, c("vore", "sleep_rem", "sleep_total")]
+msleep <- msleep[complete.cases(msleep), ]
+msleep$vore <- paste0(msleep$vore, "vore")
+
+# Base plot
+basic_msleep_plot <- ggplot(msleep) +
+  aes(x = sleep_rem, y = sleep_total, color = vore) +
   geom_point(size = 2) +
-  # with pomological color scale
-  scale_color_pomological()
+  labs(color = NULL)
 
-# Pomological Theme  
-basic_iris_plot + 
-  theme_pomological() 
+# Just your standard ggplot
+basic_msleep_plot 
 
-# With fonts (manual)
-basic_iris_plot + 
-  theme_pomological("Homemade Apple", 16)
-  
-# Or with fancy alias (same as previous)
-basic_iris_plot +
-  theme_pomological_fancy()
-  
-# Plain plot without font or background
-basic_iris_plot +
-  theme_pomological_plain()
+# With pomological colors
+basic_msleep_plot <- basic_msleep_plot + scale_color_pomological()
+basic_msleep_plot
+
+# With pomological theme
+basic_msleep_plot + theme_pomological()
+
+# With transparent background
+basic_msleep_plot + theme_pomological_plain() 
+
+# Or with "fancy" pomological settings
+pomological_msleep <- basic_msleep_plot + theme_pomological_fancy()
+
+# Painted!
+paint_pomological(pomological_msleep, res = 110)
 
 }
 \references{

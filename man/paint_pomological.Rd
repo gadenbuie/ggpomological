@@ -4,9 +4,16 @@
 \alias{paint_pomological}
 \title{Paint a ggpomological watercolor}
 \usage{
-paint_pomological(pomo_gg, width = 800, height = 500, pointsize = 16,
-  outfile = NULL, pomological_background = pomological_images("background"),
-  pomological_overlay = pomological_images("overlay"), ...)
+paint_pomological(
+  pomo_gg,
+  width = 800,
+  height = 500,
+  pointsize = 16,
+  outfile = NULL,
+  pomological_background = pomological_images("background"),
+  pomological_overlay = pomological_images("overlay"),
+  ...
+)
 }
 \arguments{
 \item{pomo_gg}{A pomologically styled ggplot2 object. See \code{\link[=theme_pomological]{theme_pomological()}}}
@@ -24,13 +31,14 @@ by ggpomological.}
 
 \item{pomological_overlay}{Overlay texture. Set to \code{NULL} for no texture.}
 
-\item{...}{Arguments passed on to \code{magick::image_graph}
-\describe{
-  \item{res}{resolution in pixels}
-  \item{clip}{enable clipping in the device. Because clipping can slow things down
+\item{...}{
+  Arguments passed on to \code{\link[magick:image_graph]{magick::image_graph}}
+  \describe{
+    \item{\code{res}}{resolution in pixels}
+    \item{\code{clip}}{enable clipping in the device. Because clipping can slow things down
 a lot, you can disable it if you don't need it.}
-  \item{antialias}{TRUE/FALSE: enables anti-aliasing for text and strokes}
-}}
+    \item{\code{antialias}}{TRUE/FALSE: enables anti-aliasing for text and strokes}
+  }}
 }
 \description{
 Uses \link{magick} to paint a pomological watercolor. (Paints your plot onto a

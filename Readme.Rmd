@@ -23,5 +23,11 @@ devtools::install_github("gadenbuie/ggpomological", build_vignettes=TRUE)
 
 ## Introduction
 
-```{r readme, child = "vignettes/ggpomological.Rmd", out.dir="Readme_files/figure-gfm/"}
+```{r include=FALSE}
+README <- TRUE
+knitr::opts_chunk$set(fig.path = "man/figures/")
+```
+
+
+```{r readme, child = "vignettes/ggpomological.Rmd", out.dir=here::here("man", "figures")}
 ```

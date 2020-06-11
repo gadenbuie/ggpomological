@@ -38,27 +38,36 @@
 #'
 #' @examples
 #' library(ggplot2)
-#' basic_iris_plot <- ggplot(iris) +
-#'   aes(x = Sepal.Length, y = Sepal.Width, color = Species) +
+#' 
+#' # Prep msleep data
+#' msleep <- ggplot2::msleep[, c("vore", "sleep_rem", "sleep_total")]
+#' msleep <- msleep[complete.cases(msleep), ]
+#' msleep$vore <- paste0(msleep$vore, "vore")
+#' 
+#' # Base plot
+#' basic_msleep_plot <- ggplot(msleep) +
+#'   aes(x = sleep_rem, y = sleep_total, color = vore) +
 #'   geom_point(size = 2) +
-#'   # with pomological color scale
-#'   scale_color_pomological()
+#'   labs(color = NULL)
 #' 
-#' # Pomological Theme  
-#' basic_iris_plot + 
-#'   theme_pomological() 
+#' # Just your standard ggplot
+#' basic_msleep_plot 
 #' 
-#' # With fonts (manual)
-#' basic_iris_plot + 
-#'   theme_pomological("Homemade Apple", 16)
-#'   
-#' # Or with fancy alias (same as previous)
-#' basic_iris_plot +
-#'   theme_pomological_fancy()
-#'   
-#' # Plain plot without font or background
-#' basic_iris_plot +
-#'   theme_pomological_plain()
+#' # With pomological colors
+#' basic_msleep_plot <- basic_msleep_plot + scale_color_pomological()
+#' basic_msleep_plot
+#' 
+#' # With pomological theme
+#' basic_msleep_plot + theme_pomological()
+#' 
+#' # With transparent background
+#' basic_msleep_plot + theme_pomological_plain() 
+#' 
+#' # Or with "fancy" pomological settings
+#' pomological_msleep <- basic_msleep_plot + theme_pomological_fancy()
+#' 
+#' # Painted!
+#' paint_pomological(pomological_msleep, res = 110)
 #' 
 #' @export
 theme_pomological <- function(

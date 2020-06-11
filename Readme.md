@@ -27,9 +27,9 @@ Aron Atkins’s ([@aronatkins](https://twitter.com/aronatkins)) [talk on
 parameterized RMarkdown](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) at
 [rstudio::conf 2018](https://www.rstudio.com/conference/).
 
-![](Readme_files/figure-gfm/ggpomological-1.png)<!-- -->
+![](man/figures/ggpomological-1.png)<!-- -->
 
-![](Readme_files/pom-examples.jpg)<!-- -->[^1]
+![](man/figures/pom-examples.jpg)<!-- -->\[1\]
 
 ## Color Palette
 
@@ -42,7 +42,7 @@ few that I thought worked well together for color and fill scales
 scales::show_col(ggpomological:::pomological_palette)
 ```
 
-![](Readme_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
+![](man/figures/unnamed-chunk-2-2.png)<!-- -->
 
 and a few colors for the plot background and decoration
 
@@ -50,7 +50,7 @@ and a few colors for the plot background and decoration
 scales::show_col(unlist(ggpomological:::pomological_base))
 ```
 
-![](Readme_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](man/figures/unnamed-chunk-3-1.png)<!-- -->
 
 I’ve also included a [css file](inst/pomological.css) with the complete
 collection of color samples.
@@ -127,52 +127,58 @@ with `theme_pomological()` for the basic theme without the crazy fonts.
 ### Basic iris plot
 
 ``` r
-# Base plot
-basic_iris_plot <- ggplot(iris) +
-  aes(x = Sepal.Length, y = Sepal.Width, color = Species) +
-  geom_point(size = 2)
+# Prep msleep data
+msleep <- ggplot2::msleep[, c("vore", "sleep_rem", "sleep_total")]
+msleep <- msleep[complete.cases(msleep), ]
+msleep$vore <- paste0(msleep$vore, "vore")
 
-# Just your standard Iris plot
-basic_iris_plot 
+# Base plot
+basic_msleep_plot <- ggplot(msleep) +
+  aes(x = sleep_rem, y = sleep_total, color = vore) +
+  geom_point(size = 2) +
+  labs(color = NULL)
+
+# Just your standard ggplot
+basic_msleep_plot 
 ```
 
-![](Readme_files/figure-gfm/plot-demo-2.png)<!-- -->
+![](man/figures/plot-demo-2.png)<!-- -->
 
 ``` r
 
 # With pomological colors
-basic_iris_plot <- basic_iris_plot + scale_color_pomological()
-basic_iris_plot
+basic_msleep_plot <- basic_msleep_plot + scale_color_pomological()
+basic_msleep_plot
 ```
 
-![](Readme_files/figure-gfm/plot-demo-3.png)<!-- -->
+![](man/figures/plot-demo-3.png)<!-- -->
 
 ``` r
 
 # With pomological theme
-basic_iris_plot + theme_pomological()
+basic_msleep_plot + theme_pomological()
 ```
 
-![](Readme_files/figure-gfm/plot-demo-4.png)<!-- -->
+![](man/figures/plot-demo-4.png)<!-- -->
 
 ``` r
 
 # With transparent background
-basic_iris_plot + theme_pomological_plain() 
+basic_msleep_plot + theme_pomological_plain() 
 ```
 
-![](Readme_files/figure-gfm/plot-demo-5.png)<!-- -->
+![](man/figures/plot-demo-5.png)<!-- -->
 
 ``` r
 
 # Or with "fancy" pomological settings
-pomological_iris <- basic_iris_plot + theme_pomological_fancy()
+pomological_msleep <- basic_msleep_plot + theme_pomological_fancy()
 
 # Painted!
-paint_pomological(pomological_iris, res = 110)
+paint_pomological(pomological_msleep, res = 110)
 ```
 
-![](Readme_files/figure-gfm/plot-demo-1.png)<!-- -->
+![](man/figures/plot-demo-1.png)<!-- -->
 
 ### Stacked bar chart
 
@@ -183,23 +189,23 @@ stacked_bar_plot <- ggplot(diamonds) +
   xlab('Price (USD)') + 
   ylab('Count') + 
   ggtitle("ggpomological") +
-  scale_x_continuous(label = scales::dollar_format()) +
+  scale_x_continuous(labels = scales::dollar_format()) +
   scale_fill_pomological()
 
 stacked_bar_plot + theme_pomological("Homemade Apple", 16)
 ```
 
-![](Readme_files/figure-gfm/plot-bar-chart-2.png)<!-- -->
+![](man/figures/plot-bar-chart-2.png)<!-- -->
 
 ``` r
 
 paint_pomological(
-  stacked_bar_plot + theme_pomological_fancy(),
+  stacked_bar_plot + theme_pomological_fancy("Homemade Apple"),
   res = 110
 )
 ```
 
-![](Readme_files/figure-gfm/plot-bar-chart-1.png)<!-- -->
+![](man/figures/plot-bar-chart-1.png)<!-- -->
 
 ### Density Plot
 
@@ -216,7 +222,7 @@ density_plot <- mtcars %>%
 density_plot + theme_pomological("Homemade Apple", 16)
 ```
 
-![](Readme_files/figure-gfm/plot-density-2.png)<!-- -->
+![](man/figures/plot-density-2.png)<!-- -->
 
 ``` r
 
@@ -226,7 +232,7 @@ paint_pomological(
 )
 ```
 
-![](Readme_files/figure-gfm/plot-density-1.png)<!-- -->
+![](man/figures/plot-density-1.png)<!-- -->
 
 ### Points and lines
 
@@ -257,7 +263,7 @@ full_bar_stack_plot <- txhousing %>%
 full_bar_stack_plot + theme_pomological("Homemade Apple", 16)
 ```
 
-![](Readme_files/figure-gfm/plot-full-bar-stack-2.png)<!-- -->
+![](man/figures/plot-full-bar-stack-2.png)<!-- -->
 
 ``` r
 
@@ -267,7 +273,7 @@ paint_pomological(
 )
 ```
 
-![](Readme_files/figure-gfm/plot-full-bar-stack-1.png)<!-- -->
+![](man/figures/plot-full-bar-stack-1.png)<!-- -->
 
 ### One last plot
 
@@ -289,7 +295,7 @@ paint_pomological(ridges_pomological, res = 110)
 #> Picking joint bandwidth of 0.057
 ```
 
-![](Readme_files/figure-gfm/plot-ridges-1.png)<!-- -->
+![](man/figures/plot-ridges-1.png)<!-- -->
 
 1.  U.S. Department of Agriculture Pomological Watercolor Collection.
     Rare and Special Collections, National Agricultural Library,

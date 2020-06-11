@@ -8,7 +8,7 @@
 \description{
 This package provides a ggplot2 theme inspired by the
 \href{https://usdawatercolors.nal.usda.gov/pom}{USDA Pomological Watercolors collection}
-and by Aron Atkins's (\href{https://twitter.com/aronatkins]}{@aronatkins})
+and by Aron Atkins's (\href{https://twitter.com/aronatkins]}{\@aronatkins})
 \href{https://github.com/rstudio/rstudio-conf/tree/master/2018/Fruit_For_Thought--Aron_Atkins}{talk on parameterized RMarkdown}
 at \href{https://www.rstudio.com/conference/}{rstudio::conf 2018}.
 }

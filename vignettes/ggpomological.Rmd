@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(echo = TRUE, fig.width=8, fig.height=5)
 library(ggpomological)
 library(dplyr)
+pom_examples_path <- if (!exists("README")) "../man/figures/pom-examples.jpg" else "man/figures/pom-examples.jpg"
 ```
 
 <!-- Links -->
@@ -32,7 +33,8 @@ This package provides a ggplot2 theme inspired by the [USDA Pomological Watercol
 
 ```{r ggpomological, echo=FALSE, message=FALSE, warning=FALSE}
 fruits <- c("Apple", "Apricot", "Banana", "Fig", "Cherry", "Kiwi", "Grape", "Mango", "Papaya", "Orange", "Peach", "Pear")
-readr::read_tsv("https://cs.joensuu.fi/sipu/datasets/Compound.txt", col_names = FALSE) %>% 
+# https://cs.joensuu.fi/sipu/datasets/Compound.txt
+readr::read_tsv(system.file("compound.txt", package = "ggpomological"), col_names = FALSE) %>% 
   filter(X3 < 10) %>% 
   mutate(X3 = sample(fruits, length(unique(X3)))[X3]) %>% 
   {
@@ -46,7 +48,7 @@ readr::read_tsv("https://cs.joensuu.fi/sipu/datasets/Compound.txt", col_names = 
   paint_pomological(res = 110) 
 ```
 
-`r knitr::include_graphics(here::here("Readme_files/pom-examples.jpg"))`^[U.S. Department of Agriculture Pomological Watercolor Collection. Rare and Special Collections, National Agricultural Library, Beltsville, MD 20705]
+`r knitr::include_graphics(pom_examples_path)`^[U.S. Department of Agriculture Pomological Watercolor Collection. Rare and Special Collections, National Agricultural Library, Beltsville, MD 20705]
 
 ## Color Palette
 
@@ -119,29 +121,35 @@ library(dplyr)
 ### Basic iris plot
 
 ```{r plot-demo}
-# Base plot
-basic_iris_plot <- ggplot(iris) +
-  aes(x = Sepal.Length, y = Sepal.Width, color = Species) +
-  geom_point(size = 2)
+# Prep msleep data
+msleep <- ggplot2::msleep[, c("vore", "sleep_rem", "sleep_total")]
+msleep <- msleep[complete.cases(msleep), ]
+msleep$vore <- paste0(msleep$vore, "vore")
 
-# Just your standard Iris plot
-basic_iris_plot 
+# Base plot
+basic_msleep_plot <- ggplot(msleep) +
+  aes(x = sleep_rem, y = sleep_total, color = vore) +
+  geom_point(size = 2) +
+  labs(color = NULL)
+
+# Just your standard ggplot
+basic_msleep_plot 
 
 # With pomological colors
-basic_iris_plot <- basic_iris_plot + scale_color_pomological()
-basic_iris_plot
+basic_msleep_plot <- basic_msleep_plot + scale_color_pomological()
+basic_msleep_plot
 
 # With pomological theme
-basic_iris_plot + theme_pomological()
+basic_msleep_plot + theme_pomological()
 
 # With transparent background
-basic_iris_plot + theme_pomological_plain() 
+basic_msleep_plot + theme_pomological_plain() 
 
 # Or with "fancy" pomological settings
-pomological_iris <- basic_iris_plot + theme_pomological_fancy()
+pomological_msleep <- basic_msleep_plot + theme_pomological_fancy()
 
 # Painted!
-paint_pomological(pomological_iris, res = 110)
+paint_pomological(pomological_msleep, res = 110)
 ```
 
 
@@ -155,13 +163,13 @@ stacked_bar_plot <- ggplot(diamonds) +
   xlab('Price (USD)') + 
   ylab('Count') + 
   ggtitle("ggpomological") +
-  scale_x_continuous(label = scales::dollar_format()) +
+  scale_x_continuous(labels = scales::dollar_format()) +
   scale_fill_pomological()
 
 stacked_bar_plot + theme_pomological("Homemade Apple", 16)
 
 paint_pomological(
-  stacked_bar_plot + theme_pomological_fancy(),
+  stacked_bar_plot + theme_pomological_fancy("Homemade Apple"),
   res = 110
 )
 ```
