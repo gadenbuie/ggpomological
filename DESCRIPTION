@@ -16,7 +16,8 @@ Depends:
 Imports: 
     magick,
     extrafont
-Suggests: 
+Suggests:
+    ggridges,
     knitr,
     rmarkdown,
     dplyr,
