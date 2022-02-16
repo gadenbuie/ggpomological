@@ -35,7 +35,7 @@ parameterized RMarkdown](https://youtu.be/Ol1FjFR2IMU?t=5h21m15s) at
 
 The colors for this theme were drawn from many images from the [USDA
 Pomological Watercolors
-collection](https://usdawatercolors.nal.usda.gov/pom), I chose just a
+collection](https://naldc.nal.usda.gov/usda_pomological_watercolor), I chose just a
 few that I thought worked well together for color and fill scales
 
 ``` r
